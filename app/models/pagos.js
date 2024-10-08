@@ -1,47 +1,50 @@
 'use strict';
-const {Model} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-	class pagos extends Model {
-		/**
-		 * Helper method for defining associations.
-		 * This method is not a part of Sequelize lifecycle.
-		 * The `models/index` file will call this method automatically.
-		 */
-		static associate(models) {
-			// this.hasMany(models.role_module, {
-			// 	foreignKey: 'id_rol',
-			// });
+const { Model, DataTypes } = require('sequelize');
 
-			// this.hasMany(models.user, {
-				// foreignKey: 'id_rol',
-			// });
-		}
+module.exports = (sequelize) => {
+    class Pagos extends Model {
+       
 
-		fromDataModel() {
-			return {
-				id: this.id,
-				metodo_pago: this.metodo_pago,
-				id_factura: this.id_factura,
-				fecha_pago: this.fecha_pago,
+        fromDataModel() {
+            return {
+                id: this.id,
+                metodopago: this.metodopago,
+                reciboId: this.reciboId,
+                monto: this.monto,
+            
+            };
+        }
+    }
 
-			};
-		}
-	}
-	pagos.init(
-		{
-			
-			
-		
-			metodo_pago: DataTypes.INTEGER,
-			id_factura: DataTypes.INTEGER,
-			fecha_pago: DataTypes.DATE,
-			
-			
-		},
-		{
-			sequelize,
-			modelName: 'pagos',
-		}
-	);
-	return pagos;
+    Pagos.init({
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        metodopago: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        reciboId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'recibos',
+                key: 'id',
+            },
+        },
+        monto: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
+        },
+      
+    }, {
+        sequelize,
+        modelName: 'pagos',
+        tableName: 'pagos',
+        timestamps: true,
+    });
+
+    return Pagos;
 };

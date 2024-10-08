@@ -1,51 +1,58 @@
 'use strict';
-const {Model} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-	class productos extends Model {
-		/**
-		 * Helper method for defining associations.
-		 * This method is not a part of Sequelize lifecycle.
-		 * The `models/index` file will call this method automatically.
-		 */
-		static associate(models) {
-			// this.hasMany(models.role_module, {
-			// 	foreignKey: 'id_rol',
-			// });
+const { Model, DataTypes } = require('sequelize');
 
-			// this.hasMany(models.user, {
-				// foreignKey: 'id_rol',
-			// });
-		}
+module.exports = (sequelize) => {
+    class Productos extends Model {
+        static associate(models) {
+            Productos.hasMany(models.HistoriaVentas, {
+                foreignKey: 'productos_id',
+                as: 'historiaVentas'
+            });
+            Productos.hasMany(models.Recibos, {
+                foreignKey: 'productos_id',
+                as: 'recibos'
+            });
+        }
 
-		fromDataModel() {
-			return {
-				id: this.id,
-				imagen: this.imagen,
-				nombre: this.nombre,
-				descripcion: this.descripcion,
-				precio_normal:this.precio_normal	,
-				precio_rebajado:this.precio_rebajado,
-				cantidad: this.cantidad,
-				categoria: this.categoria,
+        fromDataModel() {
+            return {
+                id: this.id,
+                imagen: this.imagen, // Aquí se almacena el identificador único de la imagen
+                nombre: this.nombre,
+                precio: this.precio,
+                descripcion: this.descripcion,
+            };
+        }
+    }
 
-			};
-		}
-	}
-	productos.init(
-		{
-			
-			imagen: DataTypes.STRING,
-			nombre: DataTypes.STRING,
-			descripcion: DataTypes.INTEGER,
-			precio_normal: DataTypes.INTEGER,
-			precio_rebajado: DataTypes.INTEGER,
-			cantidad: DataTypes.INTEGER,
-			categoria: DataTypes.INTEGER,
-		},
-		{
-			sequelize,
-			modelName: 'productos',
-		}
-	);
-	return productos;
+    Productos.init({
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        nombre: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        precio: {
+            type: DataTypes.DOUBLE,
+            allowNull: false,
+        },
+        descripcion: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        imagen: {
+            type: DataTypes.STRING, // Almacena el identificador único de la imagen
+            allowNull: true,
+        },
+    }, {
+        sequelize,
+        modelName: 'Productos',
+        tableName: 'productos',
+        timestamps: false,
+    });
+
+    return Productos;
 };

@@ -1,30 +1,30 @@
-const facturaServices = require('../../services/facturasServices');
+const usuariosServices = require('../../services/usuariosServices');
 
 module.exports = {
 	async index(req, res) {
-		const response = await facturaServices.index(req.query);
+		const response = await usuariosServices.index(req.query);
 		res.status(200).json(response);
 	},
 	async show(req, res) {
 		const {id} = req.params;
-		const response = await facturaServices.show(id);
+		const response = await usuariosServices.show(id);
 		res.status(200).json(response);
 	},
 	async create(req, res) {
 		const {body} = req;
 
-		const response = await facturaServices.create(body);
+		const response = await usuariosServices.create(body);
 		res.status(200).json(response);
 	},
 	async update(req, res) {
 		const {id} = req.params;
 		const {body} = req;
-		const response = await facturaServices.update(id, body);
+		const response = await usuariosServices.update(id, body);
 		res.status(200).json(response);
 	},
 	async delete(req, res) {
 		const {id} = req.params;
-		const response = await facturaServices.delete(id);
+		const response = await usuariosServices.delete(id);
 		res.status(200).json(response);
 	},
 

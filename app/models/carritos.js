@@ -1,48 +1,55 @@
 'use strict';
-const {Model} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-	class carritos extends Model {
-		/**
-		 * Helper method for defining associations.
-		 * This method is not a part of Sequelize lifecycle.
-		 * The `models/index` file will call this method automatically.
-		 */
-		static associate(models) {
-			// this.hasMany(models.role_module, {
-			// 	foreignKey: 'id_rol',
-			// });
+const { Model, DataTypes } = require('sequelize');
 
-			// this.hasMany(models.user, {
-				// foreignKey: 'id_rol',
-			// });
-		}
+module.exports = (sequelize) => {
+  class Carritos extends Model {
+    fromDataModel() {
+      return {
+        id: this.id,
+        productos_id: this.productos_id,
+        precio: this.precio,
+        nombre: this.nombre,
+      };
+    }
+  }
 
-		fromDataModel() {
-			return {
-				id: this.id,
-				id_usuario: this.id_usario,
-				id_producto: this.id_producto,
-				descripcion: this.descripcion,
-				cantidad_selecionada:this.cantidad_selecionada,
-				
+  Carritos.init({
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    productos_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'productos',
+        key: 'id',
+      },
+    },
+    
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    precio: {
+      type: DataTypes.BIGINT, // Ajusta el tipo según lo que necesites
+      allowNull: false,
+    },
+    nombre: {
+      type: DataTypes.STRING(50), // Ajusta el tipo y tamaño según tu base de datos
+      allowNull: false,
+    }
+  }, {
+    sequelize,
+    modelName: 'Carritos',
+    tableName: 'carritos',
+    timestamps: true,
+  });
 
-			};
-		}
-	}
-	carritos.init(
-		{
-			
-			
-			id_usuario: DataTypes.INTEGER,
-			id_producto: DataTypes.INTEGER,
-			descripcion: DataTypes.STRING,
-			cantidad_selecionada: DataTypes.INTEGER,
-			
-		},
-		{
-			sequelize,
-			modelName: 'carritos',
-		}
-	);
-	return carritos;
+  return Carritos;
 };
