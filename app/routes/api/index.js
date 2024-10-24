@@ -14,5 +14,5 @@ router.use('/pagos', require('./pagos.route'));
 router.use('/historia_ventas', require('./historia_ventas.route'));
 router.use('/comentarios', require('./comentarios.route'));
 router.use('/usuarios', require('./usuarios.route'));
-
+router.use('/ofertas', require('./ofertas.route'));
 module.exports = router;

@@ -9,6 +9,7 @@ module.exports = (sequelize) => {
             return {
                 id: this.id,
                 productos_id: this.productos_id,
+                ofertas_id: this.ofertas_id,
                 nombre: this.nombre,
                 comentario: this.comentario,
                 createdAt: this.createdAt,
@@ -28,6 +29,14 @@ module.exports = (sequelize) => {
             allowNull: false,
             references: {
                 model: 'productos',
+                key: 'id',
+            },
+        },
+        ofertas_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'ofertas',
                 key: 'id',
             },
         },
