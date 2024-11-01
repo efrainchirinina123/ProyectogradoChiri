@@ -59,12 +59,11 @@ module.exports.notifyProductChange = (productData) => {
 sequelize
     .authenticate()
     .then(() => {
-        console.log('DB Connection exitosa yupi  :)  ..');
+        console.log('La conexion Exitosa  :) ');
     })
     .catch((error) => {
         console.log('Failed to Connection DB Local\n', error);
     });
-//  fin db
 
 // TODO: Route for api
 app.use('/api/v1', require('./app/routes/api/index'));
