@@ -36,7 +36,7 @@ const handleLogin = () => {
                 <div class="card">
                     <div class="card-header">
                         <img src="https://smart-tk.com/wp-content/uploads/2021/12/Ecommerce-Carrito_.png" alt="Avatar" class="avatar" />
-                        <h2>Bienvenido a ShopChiri</h2>
+                        <!-- <h2>Bienvenido a ShopChiri</h2> -->
                         <p>Inicia sesión para continuar</p>
                     </div>
                     <form @submit.prevent="handleLogin">

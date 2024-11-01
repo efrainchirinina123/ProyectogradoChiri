@@ -148,8 +148,7 @@ const deleterecibo = async () => {
 
 // Opciones para el método de pago
 const metodopagoOptions = [
-    { label: 'Transferencia Bancaria', value: 'transferencia' },
-    { label: 'Efectivo', value: 'efectivo' },
+    { label: 'Transferencia Bancaria', value: 'Transferencia Bancaria' },
     { label: 'QR', value: 'qr' }
 ];
 </script>
@@ -157,7 +156,7 @@ const metodopagoOptions = [
   <div class="grid">
       <div class="col-12">
           <div class="card p-4 shadow-lg border-round">
-              <Toolbar class="mb-4 bg-blue-500 text-white border-round">
+              <Toolbar class="mb-4  text-white border-round">
                   <template v-slot:start>
                       <div class="my-2">
                           <Button label="Agregar" icon="pi pi-plus" class="mr-2" severity="success" @click="openNew" />
@@ -206,33 +205,40 @@ const metodopagoOptions = [
               </DataTable>
 
               <Dialog v-model:visible="reciboDialog" :style="{ width: '450px' }" header="Recibo" :modal="true" class="p-fluid bg-blue-50 shadow-2">
-                  <div class="field">
+                
+                <div class="field">
+                    <label for="productos_id" class="font-bold">ID Producto</label>
+                    <InputText id="productos_id" v-model="recibo.productos_id" required class="border-round" />
+                </div>
+                
+
+                <div class="field">
                       <label for="fecha" class="font-bold">Fecha</label>
                       <Calendar id="fecha" v-model="recibo.fecha" dateFormat="dd/mm/yy" showButtonBar required class="border-round" />
                       <small class="p-invalid" v-if="submitted && !recibo.fecha">Fecha es requerido.</small>
                   </div>
+
+                  <div class="field">
+                    <label for="metodopago" class="font-bold">Método de Pago</label>
+                    <Dropdown
+                        id="metodopago"
+                        v-model="recibo.metodopago"
+                        :options="metodopagoOptions"
+                        optionLabel="label"
+                        optionValue="value"
+                        placeholder="Selecciona un método de pago"
+                        class="border-round"
+                        required
+                    />
+                    <small class="p-invalid" v-if="submitted && !recibo.metodopago">Método de pago es requerido.</small>
+                </div>
+
                   <div class="field">
                       <label for="total" class="font-bold">Total</label>
                       <InputText id="total" v-model="recibo.total" required class="border-round" />
                   </div>
-                  <div class="field">
-                      <label for="metodopago" class="font-bold">Método de Pago</label>
-                      <Dropdown
-                          id="metodopago"
-                          v-model="recibo.metodopago"
-                          :options="metodopagoOptions"
-                          optionLabel="label"
-                          optionValue="value"
-                          placeholder="Selecciona un método de pago"
-                          class="border-round"
-                          required
-                      />
-                      <small class="p-invalid" v-if="submitted && !recibo.metodopago">Método de pago es requerido.</small>
-                  </div>
-                  <div class="field">
-                      <label for="productos_id" class="font-bold">ID Producto</label>
-                      <InputText id="productos_id" v-model="recibo.productos_id" required class="border-round" />
-                  </div>
+                  
+                 
 
                   <template v-slot:footer>
                       <Button label="Cancelar" icon="pi pi-times" @click="hideDialog" class="p-button-text" />

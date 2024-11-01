@@ -18,17 +18,6 @@ class ApiService {
         }
     }
 
-    async post(endpoint, data) {
-        try {
-            const response = await axios.post(`${this.apiBaseUrl}/${endpoint}`, data);
-            console.log(`POST ${this.apiBaseUrl}/${endpoint}`, data, response.data);
-            return response.data;
-        } catch (error) {
-            console.error(`Error en POST ${this.apiBaseUrl}/${endpoint}:`, error.response ? error.response.data : error.message);
-            throw error;
-        }
-    }
-
     async put(endpoint, data) {
         try {
             const response = await axios.put(`${this.apiBaseUrl}/${endpoint}`, data);
@@ -49,29 +38,56 @@ class ApiService {
             throw error;
         }
     }
-    async getImage(path) {
+    async post(endpoint, data) {
         try {
-            const response = await axios.get(`https://serverfilesdev.esam.edu.bo/v1/files/${path}`);
-            return response.data; // Retorna solo los datos en lugar del objeto de respuesta completo
+            const response = await axios.post(`${this.apiBaseUrl}/${endpoint}`, data);
+            console.log(`POST ${this.apiBaseUrl}/${endpoint}`, data, response.data);
+            return response.data;
         } catch (error) {
-            console.error('Error al obtener la imagen:', error.response ? error.response.data : error.message);
-            throw error; // Mantén el lanzamiento de errores para que se manejen en otro lugar
+            const errorMessage = error.response ? error.response.data : error.message;
+            console.error(`Error en POST ${this.apiBaseUrl}/${endpoint}:`, errorMessage);
+            throw new Error(`No se pudo completar la solicitud POST: ${errorMessage}`);
         }
     }
 
-    async createImage(base64Image) {
+ // Obtener la imagen a partir de su ruta
+    async getImage(path) {
         try {
-            const response = await axios.post('https://serverfiles.esam.edu.bo/v1/files/', {
+            // Asegúrate de que la URL sea correcta
+            const response = await axios.get(`https://serverfilesdev.esam.edu.bo/v1/files/${path}`);
+          
+          console.log('aquiiiiii');
+          
+            return response.data; // Retorna solo los datos de la imagen
+        } catch (error) {
+           
+            // throw new Error(`No se pudo obtener la imagen: ${errorMessage}`);
+        }
+    }
+
+    // Crear una imagen a partir de una cadena Base64
+    async createImage(base64Image) {
+        // Validación de que base64Image no esté vacío
+        if (!base64Image) {
+            throw new Error('La imagen base64 no puede estar vacía.');
+        }
+
+        try {
+            const response = await axios.post('https://serverfilesdev.esam.edu.bo/v1/files/', {
                 app: 'esam.certificados',
                 base64: base64Image,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json' // Especifica el tipo de contenido si es necesario
+                }
             });
-            console.log('Server response Image:', response.data); // Muestra solo los datos de la respuesta
-            return response.data; // Asegúrate de retornar solo los datos relevantes
+            console.log('Respuesta del servidor al crear la imagen:', response.data); // Muestra solo los datos de la respuesta
+            return response.data; // Retorna solo los datos relevantes
         } catch (error) {
-            console.error('Error al crear la imagen:', error.response ? error.response.data : error.message);
-            throw error; // Mantén el lanzamiento de errores para que se manejen en otro lugar
+            const errorMessage = error.response ? error.response.data : error.message;
+            console.error('Error al crear la imagen:', errorMessage);
+            throw new Error(`No se pudo crear la imagen: ${errorMessage}`);
         }
     }
 }
-
 export default ApiService;

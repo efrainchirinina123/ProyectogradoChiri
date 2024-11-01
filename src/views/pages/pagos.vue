@@ -123,10 +123,8 @@ const deleteProduct = async () => {
 
 // Payment methods for the dropdown
 const paymentMethods = [
-    { label: 'PayPal', value: 'PayPal' },
-    { label: 'Tarjeta de credito', value: 'Tarjeta de credito' },
-    { label: 'Transferencia', value: 'Transferencia' },
-    { label: 'Efectivo', value: 'Efectivo' }
+    { label: 'Transferencia Bancaria', value: 'Transferencia Bancaria' },
+    { label: 'Pago QR', value: 'Pago QR' }
 ];
 </script>
 <template>
