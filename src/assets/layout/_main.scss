@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 50%;
+    font-size: $scale;
+    background-color: blue;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--surface-ground);
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: url("https://png.pngtree.com/thumb_back/fw800/background/20231101/pngtree-artistic-dark-blue-paper-texture-creating-a-moody-background-for-artworks-image_13800621.png");
+}
+
+a {
+    text-decoration: none;
+    font-family:'Arial Narrow Bold', sans-serif;
+}
+
+.layout-wrapper {
+    min-height: 100vh;
+}
