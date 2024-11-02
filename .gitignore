@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -38,3 +39,10 @@ public/themes/viva-light/
 public/themes/viva-dark/
 public/themes/mira/
 public/themes/nano/
+=======
+/node_modules
+/package-lock.json
+/.env
+thunder-tests/
+/dist
+>>>>>>> 6f726bdc5e83d4b150cac16be6866e2cd909a6db
