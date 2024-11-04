@@ -54,7 +54,13 @@
               </div>
             </li>
 	          <li class="nav-item"><a href="contact.html" class="nav-link">Contacto</a></li>
-	          <li class="nav-item cart"><a href="cart.html" class="nav-link"><span class="icon icon-shopping_cart"></span><span class="bag d-flex justify-content-center align-items-center"><small>1</small></span></a></li>
+	          <li class="nav-item cart">
+              <a href="cart.html" class="nav-link">
+                <span class="icon icon-shopping_cart"></span>
+                <span class="bag d-flex justify-content-center align-items-center">
+                  <small id="cart-count">0</small>
+                </span>
+              </a>
 	        </ul>
 	      </div>
 		  </div>
@@ -181,6 +187,72 @@
     		</div>
     	</div>
     </section>
+
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-7 heading-section ftco-animate text-center">
+          	<span class="subheading">Puedes Obtener Ahora</span><br>
+            <h2 class="mb-4">Productos que estan en Ofertas</h2>
+            <p>¡Haz tu compra y comienza tu transformación hoy!</p>
+          </div>
+        </div>
+        <div class="tab-content ftco-animate" id="v-pills-tabContent">
+
+			<div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-1-tab">
+				<div class="row" id="product-list">
+	
+			 <!-- SECCION DE OFERTAS  -->
+			 <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-2-tab">
+				<div class="row" id="product-list">
+					<!-- Las ofertas se renderizarán aquí -->
+					 <script>async function fetchOffers() {
+						try {
+							const response = await fetch('http://localhost:3010/api/v1/ofertas');
+					
+							if (!response.ok) throw new Error('Network response was not ok');
+							const data = await response.json();
+							return data.data; // Asegúrate de que 'data' contenga el array de ofertas
+						} catch (error) {
+							console.error('Error fetching offers:', error);
+							return [];
+						}
+					}
+					
+					async function renderOffers() {
+						const offers = await fetchOffers(); // Obtener ofertas
+						const productContainer = document.getElementById('product-list');
+					
+						if (offers.length === 0) {
+							productContainer.innerHTML = '<p>No hay ofertas disponibles.</p>';
+							return;
+						}
+					
+						// Renderiza las ofertas
+						productContainer.innerHTML = offers.map(item => `
+							<div class="col-md-4 text-center">
+								<div class="menu-wrap">
+                  <img  :src="'data:image/jpeg;base64,'+imagen.file64" alt="Imagen" width="50px" /><div class="text">
+										<h3><a href="#">${item.nombre}</a></h3>
+										<p>${item.descripcion || 'Descripción no disponible.'}</p>
+										<p class="pric" style="color: #fc3441"><span><s> ${item.precioantes ? item.precioantes.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' }) : 'N/A'}</s></span></p>
+										<p class="price"><span>Ahora ${item.precioahora ? item.precioahora.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' }) : 'N/A'}</span></p>
+										<p><a href="#" class="btn btn-primary btn-outline-primary" onclick="addToCart('${item.id}')">Añadir al carrito</a></p>
+									</div>
+								</div>
+							</div>
+						`).join('');
+					}
+					
+					// Llamar a la función para renderizar ofertas
+					renderOffers();
+					</script>
+				</div>
+				<!-- SECCION DE OFERTAS  -->
+			  </div>
+			</div>
+		</section>
 
     <section class="ftco-about d-md-flex">
     	<div class="one-half img" style="background-image: url(images/about.jpg);"></div>
@@ -322,71 +394,6 @@
       </div>
     </section>
 
-    <section class="ftco-section">
-    	<div class="container">
-    		<div class="row justify-content-center mb-5 pb-3">
-          <div class="col-md-7 heading-section ftco-animate text-center">
-          	<span class="subheading">Puedes Obtener Ahora</span><br>
-            <h2 class="mb-4">Productos que estan en Ofertas</h2>
-            <p>¡Haz tu compra y comienza tu transformación hoy!</p>
-          </div>
-        </div>
-        <div class="tab-content ftco-animate" id="v-pills-tabContent">
-
-			<div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-1-tab">
-				<div class="row" id="product-list">
-	
-			 <!-- SECCION DE OFERTAS  -->
-			 <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-2-tab">
-				<div class="row" id="product-list">
-					<!-- Las ofertas se renderizarán aquí -->
-					 <script>async function fetchOffers() {
-						try {
-							const response = await fetch('http://localhost:3010/api/v1/ofertas');
-					
-							if (!response.ok) throw new Error('Network response was not ok');
-							const data = await response.json();
-							return data.data; // Asegúrate de que 'data' contenga el array de ofertas
-						} catch (error) {
-							console.error('Error fetching offers:', error);
-							return [];
-						}
-					}
-					
-					async function renderOffers() {
-						const offers = await fetchOffers(); // Obtener ofertas
-						const productContainer = document.getElementById('product-list');
-					
-						if (offers.length === 0) {
-							productContainer.innerHTML = '<p>No hay ofertas disponibles.</p>';
-							return;
-						}
-					
-						// Renderiza las ofertas
-						productContainer.innerHTML = offers.map(item => `
-							<div class="col-md-4 text-center">
-								<div class="menu-wrap">
-                  <img  :src="'data:image/jpeg;base64,'+imagen.file64" alt="Imagen" width="50px" /><div class="text">
-										<h3><a href="#">${item.nombre}</a></h3>
-										<p>${item.descripcion || 'Descripción no disponible.'}</p>
-										<p class="pric" style="color: #fc3441"><span><s> ${item.precioantes ? item.precioantes.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' }) : 'N/A'}</s></span></p>
-										<p class="price"><span>Ahora ${item.precioahora ? item.precioahora.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' }) : 'N/A'}</span></p>
-										<p><a href="#" class="btn btn-primary btn-outline-primary" onclick="addToCart('${item.id}')">Añadir al carrito</a></p>
-									</div>
-								</div>
-							</div>
-						`).join('');
-					}
-					
-					// Llamar a la función para renderizar ofertas
-					renderOffers();
-					</script>
-				</div>
-				<!-- SECCION DE OFERTAS  -->
-				 
-			</div>
-			</div>
-		</section>
 <script>
   
 </script>
