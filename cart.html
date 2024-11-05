@@ -35,7 +35,7 @@
 	          <li class="nav-item"><a href="index.html" class="nav-link">Inicio</a></li>
 	          <li class="nav-item"><a href="menu.html" class="nav-link">Productos</a></li>
 	          <li class="nav-item"><a href="services.html" class="nav-link">Servicios</a></li>
-	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+	          
 	          <li class="nav-item"><a href="about.html" class="nav-link">Acerca de</a></li>
 	          <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="room.html" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Páginas</a>
@@ -179,16 +179,75 @@
 			productContainer.innerHTML = products.map(product => `
 				<div class="col-md-4 text-center">
 					<div class="menu-wrap">
-						<a href="#" class="menu-img img mb-4" style="background-image: url(${product.imagen || 'https://fancycustoms.com/cdn/shop/files/133_600x.jpg?v=1723433861'});"></a>
-						<div class="text">
-							<h3><a href="#">${product.nombre}</a></h3>
-							<p>${product.descripcion}</p>
-							<p class="price"><span>${product.precio.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' })}</span></p>
-							<p><a href="#" class="btn btn-primary btn-outline-primary" onclick="addToCart('${product.id}', '${product.nombre}', ${product.precio})">Añadir al carrito</a></p>
+						<!-- Imagen del producto -->
+							<a href="#" class="menu-img img mb-4" style="background-image: url(${product.imagen || 'https://fancycustoms.com/cdn/shop/files/133_600x.jpg?v=1723433861'});"></a>
+									<div class="text">
+										<!-- Nombre y descripción del producto -->
+										<h3><a href="#">${product.nombre}</a></h3>
+										<p>${product.descripcion}</p>
+										<p class="price">
+											<span>${product.precio.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' })}</span>
+										</p>
+
+											<!-- Calificación con estrellas -->
+											<div class="rating" id="rating-${product.id}">
+											<span class="star" onmouseover="highlightStars('${product.id}', 1)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 1)">&#9733;</span>
+											<span class="star" onmouseover="highlightStars('${product.id}', 2)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 2)">&#9733;</span>
+											<span class="star" onmouseover="highlightStars('${product.id}', 3)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 3)">&#9733;</span>
+											<span class="star" onmouseover="highlightStars('${product.id}', 4)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 4)">&#9733;</span>
+											<span class="star" onmouseover="highlightStars('${product.id}', 5)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 5)">&#9733;</span>
+										</div>
+
+										<!-- Formulario de Comentarios -->
+										<div class="comment-section" id="comment-section-${product.id}" style="display: none;">
+										<button class="btn btn-secondary" onclick="closeCommentSection('${product.id}')">Cerrar</button>
+										<input type="text" id="name-${product.id}" placeholder="Tu nombre" class="comment-input" />
+										<textarea id="comment-${product.id}" placeholder="Escribe tu comentario aquí..." class="comment-textarea"></textarea>
+										<button class="btn btn-primary" onclick="submitComment('${product.id}')">Enviar Comentario</button>
+										</div>
+
+												
+										<!-- Botón de añadir al carrito -->
+										<p><a href="#" class="btn btn-primary btn-outline-primary" onclick="addToCart('${product.id}', '${product.nombre}', ${product.precio})">Añadir al carrito</a></p>
+									</div>
+								</div>
 						</div>
-					</div>
-				</div>
-			`).join('');
+					`).join('');
+
+// Función para mostrar/ocultar el cuadro de comentarios
+function toggleCommentBox(productId) {
+  const commentBox = document.getElementById(`commentBox-${productId}`);
+  if (commentBox) {
+    // Mostrar el cuadro de comentarios si está oculto, o ocultarlo si está visible
+    commentBox.style.display = (commentBox.style.display === 'none' || commentBox.style.display === '') ? 'block' : 'none';
+    
+    // Limpiar el cuadro de texto si se está mostrando
+    if (commentBox.style.display === 'block') {
+      const commentInput = document.getElementById(`commentInput-${productId}`);
+      if (commentInput) {
+        commentInput.value = ''; // Limpiar el campo de texto al mostrar
+      }
+    }
+  }
+}
+
+// Función para enviar el comentario
+function submitComment(productId) {
+  const commentInput = document.getElementById(`commentInput-${productId}`);
+  const commentText = commentInput ? commentInput.value.trim() : '';
+
+  if (commentText) {
+    // Aquí puedes manejar la lógica para guardar el comentario
+    console.log(`Comentario para el producto ${productId}: ${commentText}`);
+
+    // Limpiar el cuadro de texto después de enviarlo
+    commentInput.value = '';
+    alert('Comentario enviado');
+  } else {
+    alert('Por favor, escribe un comentario.');
+  }
+}
+
 		}
 
 		function addToCart(productId, nombre, precio) {
@@ -256,8 +315,111 @@
 			updateCartDisplay();
 		});
 	</script>
+<!-- campo de cometeario -->
+		<script>
+				function closeCommentSection(productId) {
+							const commentSection = document.getElementById(`comment-section-${productId}`);
+							const nameInput = document.getElementById(`name-${productId}`);
+							const commentTextarea = document.getElementById(`comment-${productId}`);
+							
+							// Oculta la sección de comentarios
+							commentSection.style.display = 'none';
 
-	
+							// Limpia los campos de entrada
+							nameInput.value = '';
+							commentTextarea.value = '';
+						}
+
+
+
+							function highlightStars(productId, rating) {
+							const stars = document.querySelectorAll(`#rating-${productId} .star`);
+							stars.forEach((star, index) => {
+								if (index < rating) {
+									star.classList.add('highlight');
+								}
+							});
+						}
+
+						function resetStars(productId) {
+							const stars = document.querySelectorAll(`#rating-${productId} .star`);
+							stars.forEach((star) => {
+								star.classList.remove('highlight');
+							});
+						}
+
+						function rateProduct(productId, rating) {
+							// Guardar la calificación (puedes integrarlo con tu backend o almacenarlo localmente)
+							console.log(`Producto ID: ${productId} calificado con ${rating} estrellas`);
+
+							// Cambiar el color de las estrellas al hacer clic
+							const stars = document.querySelectorAll(`#rating-${productId} .star`);
+							stars.forEach((star, index) => {
+								if (index < rating) {
+									star.classList.add('selected');
+								} else {
+									star.classList.remove('selected');
+								}
+							});
+
+							// Mostrar la sección de comentarios después de calificar
+							const commentSection = document.getElementById(`comment-section-${productId}`);
+							commentSection.style.display = 'block'; // Mostrar la sección de comentarios
+						}
+						// Función para registrar el comentario y enviarlo a la API
+						function submitComment(productId) {
+							// Obtener los valores del formulario de comentario
+							const nameInput = document.getElementById(`name-${productId}`);
+							const commentBox = document.getElementById(`comment-${productId}`);
+							const nameText = nameInput.value;
+							const commentText = commentBox.value;
+
+							// Verificar que ambos campos estén llenos
+							if (nameText && commentText) {
+								console.log(`Comentario de ${nameText} para el producto ID ${productId}: ${commentText}`);
+								
+								// Preparar los datos para el POST con los campos correctos
+								const data = {
+									productos_id: productId,  // Usamos el ID del producto
+									nombre: nameText,          // El nombre ingresado por el usuario
+									comentario: commentText    // El comentario ingresado por el usuario
+								};
+
+								// Enviar comentario a la API
+								fetch('http://localhost:3010/api/v1/comentarios', {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json',  // Tipo de contenido como JSON
+									},
+									body: JSON.stringify(data),  // Convertir los datos a JSON
+								})
+								.then(response => {
+									if (!response.ok) {
+										throw new Error('Error en la solicitud');
+									}
+									return response.json();
+								})
+								.then(data => {
+									console.log('Comentario enviado con éxito:', data);
+									// Limpiar los cuadros de texto y ocultar la sección de comentarios
+									nameInput.value = '';
+									commentBox.value = '';
+									const commentSection = document.getElementById(`comment-section-${productId}`);
+									commentSection.style.display = 'none';
+									alert('Gracias por tu comentario.');
+								})
+								.catch((error) => {
+									console.error('Error al enviar el comentario:', error);
+									alert('Hubo un error al enviar el comentario. Intenta nuevamente.');
+								});
+							} else {
+								// Si los campos están vacíos, mostrar un mensaje de alerta
+								alert("Por favor, completa todos los campos antes de enviar.");
+							}
+						}
+
+		</script>
+	<!-- campo de cometeario -->
 <footer class="ftco-footer ftco-section img">
 	<div class="overlay"></div>
   <div class="container">

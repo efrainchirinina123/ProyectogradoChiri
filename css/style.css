@@ -9281,3 +9281,103 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+
+
+
+
+    /* estio de comentarios */
+
+  
+				.star {
+					font-size: 20px; /* Tamaño aumentado para mayor visibilidad */
+					color: #ccc;
+					cursor: pointer;
+					transition: color 0.3s ease, transform 0.3s ease, opacity 0.3s ease, filter 0.2s ease;
+					opacity: 0.7; /* Estrellas inicialmente menos visibles */
+					text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); /* Añadir brillo a las estrellas */
+				}
+
+				.star:hover {
+					opacity: 1; /* Estrellas más visibles al pasar el cursor */
+					transform: scale(1.1); /* Efecto de zoom al pasar el cursor */
+					filter: brightness(1.5); /* Brillo adicional al hacer hover */
+				}
+
+				.star.highlight {
+					color: #252525; /* Color dorado cuando se resalta */
+					transform: scale(1.3); /* Aumentar tamaño al resaltar */
+					filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)); /* Sombra dorada al resaltar */
+				}
+
+				.star.selected {
+					color: #FFD700; /* Color dorado cuando se selecciona */
+					transform: scale(1.4); /* Efecto más grande al seleccionar */
+					filter: drop-shadow(0 0 15px rgba(255, 215, 0, 1)); /* Sombra más marcada al seleccionar */
+				}
+
+				.comment-section {
+					margin-top: 20px;
+					padding: 10px;
+					background: rgba(255, 255, 255, 0.3); /* Fondo rosado claro con 30% de opacidad */
+					
+					border-radius: 25px;
+					box-shadow: 0 20px 70px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+					opacity: 1; /* Asegúrate de que la sección sea completamente visible */
+					animation: fadeIn 0.7s ease-out forwards, slideUp 0.5s ease-out forwards;
+				}
+
+
+				/* Estilo general para el campo de texto */
+				.comment-input, .comment-textarea {
+					width: 100%;
+					padding: 10px 15px;
+					margin: 10px 0;
+					border-radius: 20px;
+					background: transparent; /* Otra forma de especificar fondo transparente */
+					color: #000000;
+					font-size: 10px;
+					font-family: 'Arial', sans-serif; /* Fuente más moderna */
+					box-shadow: 0 20px 8px rgba(0, 0, 0, 0.1); /* Sombra más sutil */
+					transition: all 0.3s ease;
+				}
+
+				/* Efecto de borde iluminado y expansión al enfocar */
+				.comment-input:focus, .comment-textarea:focus {
+				
+					outline: none;
+					animation: focusBorder 0.4s ease-in-out forwards;
+				}
+
+				/* Animación del borde al enfocarse */
+
+
+				/* Efecto hover para campos */
+				.comment-input:hover, .comment-textarea:hover {
+					box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+				}
+
+				/* Estilo para los placeholders */
+				.comment-input::placeholder, .comment-textarea::placeholder {
+					color: #9e9e9e; /* Color del placeholder */
+					font-style: italic;
+				}
+				/* Estilo del área de texto */
+				.comment-textarea {
+					height: 100px;
+					resize: none;
+				}
+
+				/* Animación de desvanecimiento y deslizamiento */
+				@keyframes fadeIn {
+					0% { opacity: 0; transform: translateY(30px); }
+					100% { opacity: 1; transform: translateY(0); }
+				}
+
+				@keyframes slideUp {
+					0% { transform: translateY(30px); opacity: 0; }
+					100% { transform: translateY(0); opacity: 1; }
+				}
+
+				
+ /* estylo de comentario  */

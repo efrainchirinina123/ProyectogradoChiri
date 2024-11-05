@@ -42,14 +42,14 @@
 	          <li class="nav-item"><a href="index.html" class="nav-link">Inicio</a></li>
 	          <li class="nav-item active"><a href="menu.html" class="nav-link">Productos</a></li>
 	          <li class="nav-item"><a href="services.html" class="nav-link">Servicios</a></li>
-	          <!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
+	          <!--  -->
 	          <li class="nav-item"><a href="about.html" class="nav-link">Acerca de</a></li>
 	          <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="room.html" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
               	
                 <a class="dropdown-item" href="product-single.html">Producto unico</a>
-                <a class="dropdown-item" href="room.html">Carrito</a>
+                
                 <a class="dropdown-item" href="checkout.html">Verificar</a>
               </div>
             </li>
@@ -305,18 +305,43 @@
 										return;
 									}
 									productContainer.innerHTML = products.map(product => `
-										<div class="col-md-4 text-center">
-											<div class="menu-wrap">
-												<a href="#" class="menu-img img mb-4" style="background-image: url(${product.imagen || 'https://fancycustoms.com/cdn/shop/files/133_600x.jpg?v=1723433861'});"></a>
-												<div class="text">
-													<h3><a href="#">${product.nombre}</a></h3>
-													<p>${product.descripcion}</p>
-													<p class="price"><span>${product.precio.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' })}</span></p>
-													<p><a href="#" class="btn btn-primary btn-outline-primary" onclick="addToCart('${product.id}', '${product.nombre}', ${product.precio})">Añadir al carrito</a></p>
+									<div class="col-md-4 text-center">
+										<div class="menu-wrap">
+											<!-- Imagen del producto -->
+											<a href="#" class="menu-img img mb-4" style="background-image: url(${product.imagen || 'https://fancycustoms.com/cdn/shop/files/133_600x.jpg?v=1723433861'});"></a>
+											<div class="text">
+												<!-- Nombre y descripción del producto -->
+												<h3><a href="#">${product.nombre}</a></h3>
+												<p>${product.descripcion}</p>
+												<p class="price">
+													<span>${product.precio.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' })}</span>
+												</p>
+
+												<!-- Calificación con estrellas -->
+												<div class="rating" id="rating-${product.id}">
+													<span class="star" onmouseover="highlightStars('${product.id}', 1)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 1)">&#9733;</span>
+													<span class="star" onmouseover="highlightStars('${product.id}', 2)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 2)">&#9733;</span>
+													<span class="star" onmouseover="highlightStars('${product.id}', 3)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 3)">&#9733;</span>
+													<span class="star" onmouseover="highlightStars('${product.id}', 4)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 4)">&#9733;</span>
+													<span class="star" onmouseover="highlightStars('${product.id}', 5)" onmouseout="resetStars('${product.id}')" onclick="rateProduct('${product.id}', 5)">&#9733;</span>
 												</div>
+
+												<!-- Formulario de Comentarios -->
+												<div class="comment-section" id="comment-section-${product.id}" style="display: none;">
+													<button class="btn btn-secondary" onclick="closeCommentSection('${product.id}')">Cerrar</button>
+													<input type="text" id="name-${product.id}" placeholder="Tu nombre" class="comment-input" />
+													<textarea id="comment-${product.id}" placeholder="Escribe tu comentario aquí..." class="comment-textarea"></textarea>
+													<button class="btn btn-primary" onclick="submitComment('${product.id}')">Enviar Comentario</button>
+												</div>
+
+												
+												<!-- Botón de añadir al carrito -->
+												<p><a href="#" class="btn btn-primary btn-outline-primary" onclick="addToCart('${product.id}', '${product.nombre}', ${product.precio})">Añadir al carrito</a></p>
 											</div>
 										</div>
-									`).join('');
+									</div>
+								`).join('');
+
 								}
 						
 								function addToCart(productId, nombre, precio) {
@@ -579,26 +604,129 @@
 	              <ul>
 	                <li><span class="icon icon-map-marker"></span><span class="text">Sucre Calvo 18</span></li>
 	                <li>
-  <a href="https://wa.me/59171014010?text=Quiero%20felicitarte%20por%20el%20excelente%20trabajo%20%F0%9F%8C%9F" target="_blank" rel="noopener noreferrer">
-    <span class="icon icon-phone"></span>
-    <span class="text">+591 71014010</span>
-  </a>
-</li>
+				<a href="https://wa.me/59171014010?text=Quiero%20felicitarte%20por%20el%20excelente%20trabajo%20%F0%9F%8C%9F" target="_blank" rel="noopener noreferrer">
+					<span class="icon icon-phone"></span>
+					<span class="text">+591 71014010</span>
+				</a>
+				</li>
 
-<li>
-  <a id="emailLink" href="mailto:chirininae@gmail.com?subject=Felicitaciones&body=Quiero%20felicitarte%20por%20el%20excelente%20trabajo%20%F0%9F%8C%9F">
-    <span class="icon icon-envelope"></span>
-    <span class="text">chirininae@gmail.com</span>
-  </a>
-</li>
+				<li>
+				<a id="emailLink" href="mailto:chirininae@gmail.com?subject=Felicitaciones&body=Quiero%20felicitarte%20por%20el%20excelente%20trabajo%20%F0%9F%8C%9F">
+					<span class="icon icon-envelope"></span>
+					<span class="text">chirininae@gmail.com</span>
+				</a>
+				</li>
 
-<script>
-  document.getElementById("emailLink").addEventListener("click", function(event) {
-    // Aquí puedes manejar cualquier función adicional antes de abrir el enlace
-    alert("Abriendo tu correo para Contactar");
-    // La función abrirá el enlace automáticamente sin necesidad de modificar la URL
-  });
-</script>
+				<script>
+					function closeCommentSection(productId) {
+					const commentSection = document.getElementById(`comment-section-${productId}`);
+					const nameInput = document.getElementById(`name-${productId}`);
+					const commentTextarea = document.getElementById(`comment-${productId}`);
+					
+					// Oculta la sección de comentarios
+					commentSection.style.display = 'none';
+
+					// Limpia los campos de entrada
+					nameInput.value = '';
+					commentTextarea.value = '';
+				}
+
+
+
+					function highlightStars(productId, rating) {
+					const stars = document.querySelectorAll(`#rating-${productId} .star`);
+					stars.forEach((star, index) => {
+						if (index < rating) {
+							star.classList.add('highlight');
+						}
+					});
+				}
+
+				function resetStars(productId) {
+					const stars = document.querySelectorAll(`#rating-${productId} .star`);
+					stars.forEach((star) => {
+						star.classList.remove('highlight');
+					});
+				}
+
+				function rateProduct(productId, rating) {
+					// Guardar la calificación (puedes integrarlo con tu backend o almacenarlo localmente)
+					console.log(`Producto ID: ${productId} calificado con ${rating} estrellas`);
+
+					// Cambiar el color de las estrellas al hacer clic
+					const stars = document.querySelectorAll(`#rating-${productId} .star`);
+					stars.forEach((star, index) => {
+						if (index < rating) {
+							star.classList.add('selected');
+						} else {
+							star.classList.remove('selected');
+						}
+					});
+
+					// Mostrar la sección de comentarios después de calificar
+					const commentSection = document.getElementById(`comment-section-${productId}`);
+					commentSection.style.display = 'block'; // Mostrar la sección de comentarios
+				}
+				// Función para registrar el comentario y enviarlo a la API
+				function submitComment(productId) {
+					// Obtener los valores del formulario de comentario
+					const nameInput = document.getElementById(`name-${productId}`);
+					const commentBox = document.getElementById(`comment-${productId}`);
+					const nameText = nameInput.value;
+					const commentText = commentBox.value;
+
+					// Verificar que ambos campos estén llenos
+					if (nameText && commentText) {
+						console.log(`Comentario de ${nameText} para el producto ID ${productId}: ${commentText}`);
+						
+						// Preparar los datos para el POST con los campos correctos
+						const data = {
+							productos_id: productId,  // Usamos el ID del producto
+							nombre: nameText,          // El nombre ingresado por el usuario
+							comentario: commentText    // El comentario ingresado por el usuario
+						};
+
+						// Enviar comentario a la API
+						fetch('http://localhost:3010/api/v1/comentarios', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',  // Tipo de contenido como JSON
+							},
+							body: JSON.stringify(data),  // Convertir los datos a JSON
+						})
+						.then(response => {
+							if (!response.ok) {
+								throw new Error('Error en la solicitud');
+							}
+							return response.json();
+						})
+						.then(data => {
+							console.log('Comentario enviado con éxito:', data);
+							// Limpiar los cuadros de texto y ocultar la sección de comentarios
+							nameInput.value = '';
+							commentBox.value = '';
+							const commentSection = document.getElementById(`comment-section-${productId}`);
+							commentSection.style.display = 'none';
+							alert('Gracias por tu comentario.');
+						})
+						.catch((error) => {
+							console.error('Error al enviar el comentario:', error);
+							alert('Hubo un error al enviar el comentario. Intenta nuevamente.');
+						});
+					} else {
+						// Si los campos están vacíos, mostrar un mensaje de alerta
+						alert("Por favor, completa todos los campos antes de enviar.");
+					}
+				}
+
+
+				document.getElementById("emailLink").addEventListener("click", function(event) {
+					// Aquí puedes manejar cualquier función adicional antes de abrir el enlace
+					alert("Abriendo tu correo para Contactar");
+					// La función abrirá el enlace automáticamente sin necesidad de modificar la URL
+				});
+				</script>
+				
 	              </ul>
 	            </div>
             </div>
