@@ -270,3 +270,1070 @@
     
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Sección de chatbot -->
+ 
+<span class="chatbox-icon-container">
+  <span class="chatbox-icon">
+      <img src=images/chaboot-2.png alt="Icono">
+  </span>
+</span>
+
+<style>
+/* Chatbox Icon Container */
+.chatbox-icon-container {
+  position: fixed;
+  bottom: 2px;
+  right: 2px;
+  z-index: 1000;
+  
+}
+
+/* Chatbox Icon Styles */
+/* icono de pricipal */
+.chatbox-ico img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  animation: color-change 1s infinite alternate, 
+             shadow-pulse 2s infinite ease-in-out, 
+             glow-effect 1s infinite alternate;
+  transition: transform 0.5s ease, filter 0.5s ease, box-shadow 0.5s ease, opacity 0.5s ease;
+}
+/* icono vista principal clik  */
+.chatbox-icon img {
+  width: 65px;
+  height: 65px;
+  border-radius: 60%;
+  animation: color-change 4s infinite alternate, 
+             shadow-pulse 2s infinite ease-in-out, 
+             scale-rotate 0s infinite ease-in-out, 
+             glow-effect 1.5s infinite alternate;
+}
+
+
+
+/* Shadow Pulse Animation */
+@keyframes shadow-pulse {
+  0%, 100% {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  }
+  50% {
+      box-shadow: 0 0 40px rgb(3, 47, 190);
+  }
+  50% {
+      box-shadow: 0 0 40px rgb(197, 231, 3);
+  }
+}
+
+/* Scale and Rotate Animation */
+@keyframes scale-rotate {
+  0%, 100% {
+      transform: scale(1) rotate(0deg);
+  }
+  50% {
+      transform: scale(1.2) rotate(360deg);
+  }
+}
+
+/* Glow Effect Animation */
+@keyframes glow-effect {
+  0% {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+      text-shadow: 0 0 20px rgb(7, 61, 238);
+  }
+  100% {
+      text-shadow: 0 0 10px rgba(2, 81, 250, 0.5);
+  }
+}
+
+/* Hover Effect */
+.chatbox-icon img:hover {
+  animation: none; /* Disable previous animations on hover */
+  transform: scale(1.1); /* Slightly enlarge the icon */
+  filter: brightness(1.2); /* Increase brightness */
+  opacity: 0.8; /* Slightly reduce opacity for a glowing effect */
+  position: relative;
+}
+
+.chatbox-icon img:hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 0, 255, 0.5), rgba(0, 255, 255, 0.5));
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: bubble-effect 1s forwards;
+}
+
+/* Bubble Effect Animation */
+@keyframes bubble-effect {
+  to {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+  }
+}
+.button-container {
+  text-align: center;
+  margin-top: 20px; /* Espaciado superior */
+}
+
+.modern-button {
+  position: relative; /* Posición relativa para los pseudo-elementos */
+  background: linear-gradient(135deg, #5b83f0, #e8e8e8); /* Degradado de fondo */
+  color: rgb(8, 8, 8); /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 30px; /* Bordes redondeados */
+  padding: 12px 24px; /* Espaciado interno */
+  font-size: 18px; /* Tamaño de fuente */
+  font-weight: bold; /* Negrita */
+  cursor: pointer; /* Cambiar cursor al pasar el mouse */
+  display: flex; /* Usar flexbox */
+  align-items: center; /* Centrar verticalmente */
+  transition: background 0.4s ease, box-shadow 0.4s ease; /* Transición de fondo y sombra */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+  overflow: hidden; /* Ocultar el texto cuando desaparezca */
+}
+
+.modern-button i {
+  margin-right: 8px; /* Espacio entre ícono y texto */
+  font-size: 20px; /* Tamaño del ícono */
+  color: white; /* Color del ícono inicial */
+  transition: color 0.4s ease, transform 0.4s ease; /* Transición de color y transformación del ícono */
+}
+
+.button-text {
+  transition: opacity 0.4s ease, transform 0.4s ease; /* Transición de opacidad y transformación */
+}
+
+.modern-button:hover {
+  background: linear-gradient(135deg, #ffffff, #ffffff); /* Cambio de degradado al pasar el mouse */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más intensa al pasar el mouse */
+}
+
+.modern-button:hover .button-text {
+  opacity: 0; /* Desvanecer el texto */
+  transform: translateY(-10px); /* Mover el texto hacia arriba */
+}
+
+.modern-button:hover i {
+  color: #052bd4; /* Cambiar color del ícono en hover */
+  transform: scale(1.2); /* Aumentar el tamaño del ícono en hover */
+  transition: color 0.4s ease, transform 0.4s ease; /* Transición de color y tamaño */
+}
+
+/* Chatbox Body Styles */
+.chatbox-body {
+display: none;
+position: fixed;
+bottom: 50px;
+right: 15px;
+width: 310px;
+height: 490px;
+border-radius: 30px; /* Esquinas redondeadas estilo celular */
+background-color: rgba(251, 252, 253, 0.3); /* Fondo muy transparente */
+border: 2px solid white; /* Borde blanco */
+overflow: hidden;
+font-family: 'Arial', sans-serif;
+z-index: 1000;
+transition: opacity 0.3s ease-in-out, transform 0.3s ease;
+animation: slideIn 0.5s ease-out;
+box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para simular profundidad */
+}
+
+.chatbox-body.show {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Chatbox Header Styles */
+.chatbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: headerFadeIn 0.5s ease-out;
+  border-color: #00bcd4;
+}
+
+.chatbox-header-icon {
+  font-size: 30px;
+}
+
+.chatbox-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 26px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.chatbox-toggle:hover {
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+/* Chatbox Messages Styles */
+.chatbox-messages {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+  border-top: 1px solid #f3f3f3;
+  animation: messagesFadeIn 0.6s ease-out;
+}
+
+.message-bubble {
+  border-radius: 20px;
+  padding: 5px 18px;
+  margin: 8px 0;
+  max-width: 80%;
+  position: relative;
+  animation: bubbleSlideIn 0.5s ease-out;
+}
+.message-bubble.user {
+  background: #616054;
+  align-self: flex-end; /* Esto ya está correcto para alinear a la derecha */
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-left: auto; /* Agrega esto para empujar el mensaje hacia la derecha */
+}
+
+.message-bubble.bot {
+  background: rgba(111, 139, 233, 0.8); /* Fondo azul con 80% de opacidad */
+  align-self: flex-start;
+  color: #000000;
+  padding: 5px 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 12px; /* Bordes redondeados */
+  padding: 12px; /* Espacio interno */
+  transition: background 0.4s ease, box-shadow 0.4s ease; /* Animaciones suaves */
+}
+
+
+/* Chatbox Input Container Styles */
+.chatbox-input-container {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #444;
+  background: linear-gradient(135deg, #8f8b8b);
+}
+
+.chatbox-input-container input {
+  flex: 50;
+  border: none;
+  padding: 10px;
+  font-size: 11px;
+  border-radius: 25px;
+  color: #0a0a0a;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  background-color: #dddedf;
+}
+
+.chatbox-input-container input:focus {
+ 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  outline: none;
+  transform: scale(1.02);
+}
+.chatbox-input-container button {
+  margin-left: 10px;
+  background: linear-gradient(135deg, #0a0a0a);
+  color: rgb(3, 82, 230);
+  border: none;
+  padding: 1px 2px; /* Tamaño del botón sin cambios */
+  border-radius: 25px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s; /* Solo transición de color */
+  font-size: 16px;
+  font-weight: bold;
+  display: flex; /* Para alinear el ícono y el texto */
+  align-items: center; /* Centra verticalmente */
+}
+
+.chatbox-input-container button .icon {
+  transition: transform 0.3s; /* Transición para la rotación del ícono */
+  margin-right: 5px; /* Espaciado entre el ícono y el texto */
+}
+
+.chatbox-input-container button:hover {
+  color: #fff; /* Cambia el color del texto al pasar el cursor */
+}
+
+.chatbox-input-container button:hover .icon {
+  transform: rotate(360deg); /* Rota el ícono 360 grados al pasar el cursor */
+}
+
+
+.chatbox-input-container button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0%;
+  height: 0%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+  transition: width 0.3s, height 0.3s, top 0.3s, left 0.3s;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.chatbox-input-container button:hover::before {
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+}
+
+.chatbox-input-container button:hover {
+  
+  transform: translateY(-5px);
+}
+
+.chatbox-input-container button span {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Name Input Section Styles */
+.name-input-container {
+  display: flex;
+  margin: 20px; /* Espaciado alrededor del contenedor */
+  position: relative; /* Necesario para los pseudo-elementos */
+  margin: 20px; /* Espaciado alrededor del contenedor */
+  display: flex;
+  position: relative; /* Necesario para los pseudo-elementos */
+  display: flex;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 10;
+  animation: slideInUp 0.5s ease-out;
+}
+
+.name-input-container input {
+  width: 50%; 
+  border-radius: 50px; 
+  padding: 14px 20px;
+  font-size: 14px; 
+  background-color: transparent;
+  outline: none;
+  position: relative;
+  z-index: 1; /* Mantiene el input por encima del pseudo-elemento */
+  padding: 6px;
+  position: relative;
+  overflow: hidden; /* Asegura que el pseudo-elemento no se salga del contenedor */
+  animation: pulse 1.5s infinite; /* Aplica la animación de pulso */
+}
+
+.name-input-container input:focus:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
+  transform: scale(1.05); /* Agranda el input al enfocar */
+  width: 55%; /* Aumenta el ancho ligeramente cuando está en foco */
+  transition: all 0.4s ease; /* Transición más larga para el efecto hover */
+
+}
+
+@keyframes pulse {
+  
+  50% {
+     box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+  }
+  100% {
+     box-shadow: 0 0 0 rgba(5, 83, 228, 0.7);
+  }
+}
+
+.name-input-container input:focus::before {
+  transform: scaleY(1); /* Expande el pseudo-elemento */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleY(0); /* Inicialmente colapsado */
+  transform-origin: bottom; /* Animación desde el fondo hacia arriba */
+  transition: transform 0.3s ease;
+  z-index: 0; /* Coloca el pseudo-elemento detrás del input */
+  content: ''; /* Contenido vacío para el pseudo-elemento */
+  position: absolute; /* Posiciona el pseudo-elemento */
+  top: 50%;
+  left: 50%;
+  width: 30%; /* Tamaño mayor que el input */
+  height: 300%;
+  border-radius: 50%; /* Forma circular */
+  transform: translate(-50%, -20%) scale(1.2); /* Centra y expande el pseudo-elemento */
+  z-index: -1; /* Coloca el pseudo-elemento detrás del input */
+  
+}
+/* Efecto al enfocarse */
+.name-input-container input:focus {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  transform: scale(1.02);
+}
+/* Animations */
+@keyframes bounceIn {
+  from {
+      transform: scale(0.5);
+      opacity: 0;
+  }
+  to {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateY(-20px);
+      opacity: 0;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+@keyframes headerFadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes messagesFadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes bubbleSlideIn {
+  from {
+      transform: translateY(10px);
+      opacity: 0;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+.chatbox-controls {
+  display: flex;
+  justify-content: flex-end; /* Alinear los botones a la derecha */
+  padding: 0; /* Sin espaciado alrededor de los botones */
+  border-radius: 8px 8px 0 0; /* Bordes redondeados en la parte superior */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  margin-right: 20px;
+}
+
+.action-chatbot {
+  background-color: transparent; /* Fondo transparente para el botón */
+  border: none; /* Sin borde */
+  cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+  padding: 3px; /* Espaciado interno para botones más pequeños */
+  margin-left: 10px; /* Espaciado entre los botones */
+  transition: transform 0.2s; /* Transiciones suaves */
+  border-radius: 5px; /* Bordes redondeados */
+}
+
+.action-chatbot:hover {
+  transform: scale(1.1); /* Efecto de aumento al pasar el mouse */
+}
+</style>
+
+<!-- ESTIO DE CHABOOT -->
+<!-- formulario de chatboot -->
+<div id="chatbox-body" class="chatbox-body"><div class="button-container">
+  <!-- Botón para limpiar el chat -->
+<div class="chatbox-control">
+  <button id="chatbox-clear" class="action-chatbot">
+      <span class="llimpiar">x</span>
+  </button>
+
+  <button class="close-button action-chatbot" id="chatbox-toggle">
+      <span class="cerrar">-</span>
+  </button>
+</div>
+
+
+<style>
+/* Estilo del contenedor de botones */
+.chatbox-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  
+}
+
+/* Estilos para los botones */
+.action-chatbot {
+  border: none;
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover para los botones */
+.action-chatbot:hover {
+  transform: scale(1.1);
+}
+/* Estilo del contenido de los botones */
+.llimpiar, .cerrar {
+  color: #070707;
+  font-family: Impact, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
+}
+
+/* estilo de botones de chaboot opcionales */
+/* Estilo moderno para los botones */
+.bot-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.modern-button {
+  border: none;
+  border-radius: 25px;
+  color: #030303;
+  font-size: 16px;
+  padding: 2px 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.modern-button:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+}
+
+.modern-button:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: all 0.6s ease;
+}
+
+.modern-button:hover:before {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
+}
+
+.modern-button:focus {
+  outline: none;
+}
+
+/* Estilo para los mensajes del bot y del usuario */
+.bot-message, .user-message {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+}
+
+.bot-message {
+  background-color: #f1f1f1;
+  align-self: flex-start;
+}
+
+.user-message {
+  background-color: #d1ffd1;
+  align-self: flex-end;
+}
+
+/* estilo de botones de opcion de chaboot */
+</style>
+
+</div>
+
+
+ <button id="chatbox-toggle" class="chatbox-toggle"></button>
+ <div id="name-input-container" class="name-input-container">
+     <input id="user-name" type="text" placeholder="Ingresa tu nombre..." />
+ </div>
+ <div class="chatbox-messages" id="chatbox-messages">
+     <!-- Los mensajes aparecerán aquí -->
+ </div>
+ <div class="chatbox-input-container">
+     <input id="chatbox-input" type="text" placeholder="Habla con Kobi..." />
+     <button id="chatbox-send" class="chatbox-send">--<i class="fas fa-paper-plane"></i>--</button>
+ </div>
+ 
+</div>
+
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- formulario de chatboot -->
+<!-- // formulario de chaboot -->
+
+<script>
+  // limpiar
+  document.getElementById('chatbox-clear').addEventListener('click', function() {
+  document.getElementById('chatbox-messages').innerHTML = ''; // Clear messages
+});
+// limpiar
+
+  document.getElementById('chatbox-toggle').addEventListener('click', () => {
+  const commentForm = document.getElementById('chatbox-body');
+  commentForm.classList.remove('show'); // Remove the 'show' class to hide the form
+});
+  // Show/Hide Chatbox
+  document.querySelector(".chatbox-icon").addEventListener("click", function() {
+     const chatboxBody = document.getElementById("chatbox-body");
+     chatboxBody.classList.toggle("show");
+  });
+  
+  // funcion de botones de chaboot
+
+  // Handle Name Input and Enter Key
+  // Agregar evento para capturar el nombre del usuario
+document.getElementById("user-name").addEventListener("keypress", function(e) {
+  if (e.key === 'Enter') {
+      const userName = e.target.value;
+      if (userName) {
+          document.getElementById("name-input-container").style.display = 'none';
+          document.querySelector(".chatbox-body").classList.add("show");
+          addMessage(`¡Hola, Soy Kobi! ¿En qué puedo ayudarte, ${userName}?`, 'bot');
+          showButtons(); // Llamar a la función para mostrar botones
+      }
+  }
+});
+
+// Función para mostrar los botones de acción
+function showButtons() {
+  const buttonsHTML = `
+      <div class="bot-buttons">
+          <button class="modern-button" onclick="verProductos()">Ver productos</button>
+          <button class="modern-button" onclick="contactarme()">Contactarme</button>
+          <button class="modern-button" onclick="comentar()">Comentar</button>
+          <button class="modern-button" onclick="calificar()">Calificar</button>
+      </div>
+  `;
+  addMessage(buttonsHTML, 'bot'); // Añadir los botones como un mensaje del bot
+}
+
+// Función para agregar mensajes al chat
+function addMessage(message, sender) {
+  const messageContainer = document.createElement("div");
+  messageContainer.className = sender === 'bot' ? 'bot-message' : 'user-message';
+  messageContainer.innerHTML = message;
+  document.querySelector(".chatbox-body").appendChild(messageContainer);
+}
+
+// Funciones para cada acción de los botones
+function verProductos() {
+  window.location.href = 'menu.html'; // Redirige a menu.html
+}
+
+
+function contactarme() {
+  const numero = "71014010"; // Número de contacto
+  const mensaje = `¡Hola! Me gustaría contactarte.`;
+  
+  // Mostrar el número en un mensaje
+  alert(`Número de contacto: ${numero}\n${mensaje}`);
+
+  // Redirigir a WhatsApp
+  const urlWhatsApp = `https://wa.me/591${71014010}?text=${encodeURIComponent(mensaje)}`;
+  window.open(urlWhatsApp, '_blank'); // Abre WhatsApp en una nueva pestaña
+}
+
+
+
+function comentar() {
+  // Obtener la sección del formulario de comentarios
+  // window.location.href = 'menu.html';
+  const opinionSection = document.getElementById('acopinion-section');
+
+  // Si la sección existe, hacer scroll hacia ella
+  if (opinionSection) {
+      opinionSection.scrollIntoView({ behavior: 'smooth' });
+  } else {
+      alert('No se encontró la sección de comentarios.');
+  }
+}
+
+
+
+// funcion de botones de chaboot
+  
+ // Función para enviar mensajes
+function sendMessage() {
+  const messageInput = document.getElementById("chatbox-input");
+  const messageText = messageInput.value;
+  if (messageText) {
+      addMessage(messageText, 'user');
+      messageInput.value = '';
+      handleBotResponse(messageText);
+  }
+}
+
+// Event listener para el botón de enviar
+document.getElementById("chatbox-send").addEventListener("click", sendMessage);
+
+// Event listener para la tecla Enter
+document.getElementById("chatbox-input").addEventListener("keypress", function(event) {
+  if (event.key === 'Enter') {
+      sendMessage();
+  }
+});
+
+  
+  // Add Message Function
+  function addMessage(text, sender) {
+     const messagesContainer = document.getElementById("chatbox-messages");
+     const messageBubble = document.createElement("div");
+     messageBubble.classList.add("message-bubble", sender);
+     messageBubble.innerHTML = text;
+     messagesContainer.appendChild(messageBubble);
+     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  function calificar() {
+  const rating = prompt('Por favor, califica del 1 al 5:');
+  if (rating >= 1 && rating <= 5) {
+      addMessage(`La Calificación de: ${rating} puntos nos impulsa a mejorar`, 'user'); // Muestra la calificación en el chat
+  } else {
+      alert('Calificación no válida. Por favor, ingresa un número del 1 al 5.');
+  }
+}
+  // formulario de chaboot
+  // Handle Bot Response
+  function handleBotResponse(userMessage) {
+     let response;
+
+     // Simple responses based on user input
+     if (userMessage.toLowerCase().includes('quiero saber más')) {
+         response = `<p>Quieres saber más de los productos, háblame aquí:</p>
+<a href="https://wa.link/fyld80" target="_blank" style="display: inline-block; padding: 10px 20px; margin-top: 10px; font-size: 16px; color: #ffffff; background-color: #25D366; border-radius: 5px; text-decoration: none; text-align: center;">
+   <i class="fab fa-whatsapp" style="font-size: 24px; margin-right: 8px;"></i> 
+</a>
+<button style="display: inline-block; padding: 10px 20px; margin-top: 10px; font-size: 16px; color: #ffffff; background-color: #3498db; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; text-align: center;">
+   <i class="fas fa-info-circle" style="font-size: 24px; margin-right: 8px;"></i>
+</button>
+`;
+} else if (userMessage.toLowerCase().includes('como puedo pagar')) {
+   response = `
+   <div style="
+       background-color: rgba(251, 252, 253, 0.3); /* Fondo con un tono de azul claro */
+       border-radius: 12px; /* Bordes redondeados */
+       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
+       padding: 20px;
+       max-width: 400px;
+       margin: auto;
+       text-align: center;
+       transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones para efectos de hover */
+   ">
+       <h2 style="
+           font-family: 'Palace Script MT', cursive; /* Fuente elegante */
+           color: #004d40; /* Color verde oscuro */
+           margin-bottom: 15px;
+           animation: fadeIn 1s ease-in; /* Animación de entrada */
+       ">¿Cómo puedes pagar?</h2>
+       <p style="
+           font-size: 18px;
+           color: #004d40; /* Verde oscuro para el texto */
+           margin-bottom: 20px;
+           animation: fadeIn 1s ease-in 0.5s; /* Animación de entrada con retraso */
+       "></p>
+       <div style="
+           display: inline-block;
+           padding: 15px;
+           border: 3px solid #004d40; /* Borde verde oscuro */
+           border-radius: 10px; /* Bordes redondeados */
+           background-color: #ffffff; /* Fondo blanco */
+           transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones para efectos de hover */
+           animation: bounceIn 1s ease-out; /* Animación de entrada */
+       ">
+           <img src="/images/QRCHIRI.jpeg" 
+                alt="Código QR de pago" 
+                style="
+                   width: 100%; /* Ajuste de tamaño */
+                   border-radius: 8px; /* Bordes redondeados */
+                   transition: transform 0.3s ease; /* Transición suave para hover */
+                   transform: scale(1); /* Tamaño normal */
+               "
+               onmouseover="this.style.transform='scale(1.05)'" 
+               onmouseout="this.style.transform='scale(1)'"
+           >
+       </div>
+   </div>
+   <style>
+       @keyframes fadeIn {
+           from { opacity: 0; }
+           to { opacity: 1; }
+       }
+       @keyframes bounceIn {
+           from {
+               opacity: 0;
+               transform: scale(0.3);
+           }
+           50% {
+               opacity: 1;
+               transform: scale(1.1);
+           }
+           100% {
+               transform: scale(1);
+           }
+       }
+   </style>`;
+}
+else if (userMessage.toLowerCase().includes('quiero pagar')) {
+   response = `
+   <div style="
+       background-color: rgba(251, 252, 253, 0.3); /* Fondo con un tono de azul claro */
+       border-radius: 12px; /* Bordes redondeados */
+       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
+       padding: 20px;
+       max-width: 400px;
+       margin: auto;
+       text-align: center;
+       transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones para efectos de hover */
+   ">
+       <h2 style="
+           font-family: 'Palace Script MT', cursive; /* Fuente elegante */
+           color: #004d40; /* Color verde oscuro */
+           margin-bottom: 15px;
+           animation: fadeIn 1s ease-in; /* Animación de entrada */
+       ">¿Cómo puedes pagar?</h2>
+       <p style="
+           font-size: 18px;
+           color: #004d40; /* Verde oscuro para el texto */
+           margin-bottom: 20px;
+           animation: fadeIn 1s ease-in 0.5s; /* Animación de entrada con retraso */
+       "></p>
+       <div style="
+           display: inline-block;
+           padding: 15px;
+           border: 3px solid #004d40; /* Borde verde oscuro */
+           border-radius: 10px; /* Bordes redondeados */
+           background-color: #ffffff; /* Fondo blanco */
+           transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones para efectos de hover */
+           animation: bounceIn 1s ease-out; /* Animación de entrada */
+       ">
+           <img src="/images/WhatsApp Image 2024-09-01 at 8.39.28 PM.jpeg" 
+                alt="Código QR de pago" 
+                style="
+                   width: 100%; /* Ajuste de tamaño */
+                   border-radius: 8px; /* Bordes redondeados */
+                   transition: transform 0.3s ease; /* Transición suave para hover */
+                   transform: scale(1); /* Tamaño normal */
+               "
+               onmouseover="this.style.transform='scale(1.05)'" 
+               onmouseout="this.style.transform='scale(1)'"
+           >
+       </div>
+   </div>
+   <style>
+       @keyframes fadeIn {
+           from { opacity: 0; }
+           to { opacity: 1; }
+       }
+       @keyframes bounceIn {
+           from {
+               opacity: 0;
+               transform: scale(0.3);
+           }
+           50% {
+               opacity: 1;
+               transform: scale(1.1);
+           }
+           100% {
+               transform: scale(1);
+           }
+       }
+   </style>`;
+}
+
+            else if (userMessage.toLowerCase().includes('hola')) {
+                    response = 'Que dudas tienes';
+                    
+                } else if (userMessage.toLowerCase().includes('hace envios')) {
+                    response = 'El tiempo de envío depende de tu ubicación y del método seleccionado. Generalmente es de 3 a 7 días hábiles.';
+                    
+                } 
+                else if (userMessage.toLowerCase().includes('hace envios')) {
+              response = 'Sí, realizamos envíos nacionales e internacionales.';
+          }
+
+          else if (userMessage.toLowerCase().includes('tienen descuento')) {
+              response = 'Sí, tenemos descuentos en productos seleccionados.';
+          }
+
+          else if (userMessage.toLowerCase().includes('cómo devolver un producto')) {
+              response = 'Puedes devolverlo dentro de 30 días.';
+          }
+
+          else if (userMessage.toLowerCase().includes('tienen tienda física')) {
+              response = 'Operamos solo en línea.';
+          }
+
+          else if (userMessage.toLowerCase().includes('cuál es el horario de atención')) {
+              response = 'De lunes a viernes, de 9:00 AM a 6:00 PM.';
+          }
+
+          else if (userMessage.toLowerCase().includes('cuál es el estado de mi pedido')) {
+              response = 'Puedes rastrear tu pedido con el número de seguimiento.';
+          }
+
+          else if (userMessage.toLowerCase().includes('cómo me contacto')) {
+              response = 'Puedes contactarnos por correo, chat en vivo o redes sociales.';
+          }
+
+          else if (userMessage.toLowerCase().includes('es seguro comprar en línea')) {
+              response = 'Sí, usamos encriptación SSL para tu seguridad.';
+          }
+
+          else if (userMessage.toLowerCase().includes('tienen garantía')) {
+              response = 'Sí, todos nuestros productos tienen garantía.';
+          }
+          else if (userMessage.toLowerCase().includes('quiero ver productos')) {
+              response = `
+                  <div class="button-container">
+                      <button class="modern-button" onclick="location.href='menu.html'">
+                          <i class="fas fa-shopping-cart"></i> <span class="button-text">Ver productos</span>
+                      </button>
+                  </div>
+              `;
+          }
+
+
+else if (userMessage.toLowerCase().includes('puego hacer pedido pedido')) {
+         response = 'Recibirás un correo con un número de seguimiento para puego hacer pedido tu pedido.';
+     } 
+      else if (userMessage.toLowerCase().includes('pago')) {
+         response = 'Aceptamos y transferencias bancarias mediante QR enviando un mensaje por medio de whatsapp .';
+     } else if (userMessage.toLowerCase().includes('tengo reclamo')) {
+         response = 'Contáctanos para que podamos saber el reclamo .';
+     } else if (userMessage.toLowerCase().includes('gracias')) {
+         response = '¡Gracias! a ti Si necesitas algo, no dudes en decírmelo. Estoy aquí para ayudarte.';
+     } else if (userMessage.toLowerCase().includes('como estas')) {
+         response = 'Me siento como tu te estas sintiendote.';
+     } else if (userMessage.toLowerCase().includes('donde es su tienda')) {
+  response = '¡Gracias por tu interés! Nuestra tienda se encuentra en la hermosa ciudad de Sucre, Bolivia. Aquí te mostramos nuestra ubicación en vista satelital: <br><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d382.2934918781508!2d-65.25804649999999!3d-19.048114899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x93fbcf01f4cd4efb%3A0xe5f789cffb2cb7d6!2sInstituto%20T%C3%A9cnico%20CCA!5e0!3m2!1ses!2sbo!4v1695636720845!5m2!1ses!2sbo&t=k" width="250" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div><br>¡Esperamos verte pronto en nuestra tienda!';
+     }
+      else {
+   response = `Soy un asistente virtual, así que no tengo una forma física. Pero estoy aquí para ayudarte  relacionada con los servicios de la Tienda. ¿Hay algo específico en lo que pueda asistirte hoy?
+      
+   <style>
+       @keyframes fadeInUp {
+           from {
+               opacity: 0;
+               transform: translateY(20px);
+           }
+           to {
+               opacity: 1;
+               transform: translateY(0);
+           }
+       }
+       @keyframes rippleEffect {
+           0% {
+               transform: rotate(-15deg) scale(1);
+               background: rgba(0, 150, 136, 0.2);
+           }
+           50% {
+               transform: rotate(-15deg) scale(1.15);
+               background: rgba(0, 150, 136, 0.25);
+           }
+           100% {
+               transform: rotate(-15deg) scale(1);
+               background: rgba(0, 150, 136, 0.2);
+           }
+       }
+       @keyframes fadeIn {
+           from {
+               opacity: 0;
+           }
+           to {
+               opacity: 1;
+           }
+       }
+       @keyframes pulseAnimation {
+           0% {
+               transform: scale(1);
+               box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+           }
+           50% {
+               transform: scale(1.05);
+               box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+           }
+           100% {
+               transform: scale(1);
+               box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+           }
+       }
+   </style>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">`;
+}
+
+
+     setTimeout(() => addMessage(response, 'bot'), 1000);
+  }
+</script>
+
+
+<!-- Seccio  de chatbooot -->
+
+
+<body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

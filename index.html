@@ -1580,14 +1580,7 @@ function comentar() {
 }
 
 
-function calificar() {
-    const rating = prompt('Por favor, califica del 1 al 5:');
-    if (rating >= 1 && rating <= 5) {
-        addMessage(`Tu  Calificación de: ${rating} puntos nos impulsa a mejorar`, 'user'); // Muestra la calificación en el chat
-    } else {
-        alert('Calificación no válida. Por favor, ingresa un número del 1 al 5.');
-    }
-}
+
 // funcion de botones de chaboot
     
    // Función para enviar mensajes
@@ -1622,7 +1615,14 @@ document.getElementById("chatbox-input").addEventListener("keypress", function(e
        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-
+    function calificar() {
+    const rating = prompt('Por favor, califica del 1 al 5:');
+    if (rating >= 1 && rating <= 5) {
+        addMessage(`La Calificación de: ${rating} puntos nos impulsa a mejorar`, 'user'); // Muestra la calificación en el chat
+    } else {
+        alert('Calificación no válida. Por favor, ingresa un número del 1 al 5.');
+    }
+}
     // formulario de chaboot
     // Handle Bot Response
     function handleBotResponse(userMessage) {
@@ -1771,28 +1771,64 @@ document.getElementById("chatbox-input").addEventListener("keypress", function(e
      </style>`;
  }
  
-  else if (userMessage.toLowerCase().includes('hola')) {
-           response = 'Que dudas tienes';
-           
-       } else if (userMessage.toLowerCase().includes('envio')) {
-           response = 'El tiempo de envío depende de tu ubicación y del método seleccionado. Generalmente es de 3 a 7 días hábiles.';
-           
-       } else if (userMessage.toLowerCase().includes('quiero ver productos')) {
-    response = `
-        <div class="button-container">
-            <button class="modern-button" onclick="location.href='menu.html'">
-                <i class="fas fa-shopping-cart"></i> <span class="button-text">Ver productos</span>
-            </button>
-        </div>
-    `;
-}
+              else if (userMessage.toLowerCase().includes('hola')) {
+                      response = 'Que dudas tienes';
+                      
+                  } else if (userMessage.toLowerCase().includes('hace envios')) {
+                      response = 'El tiempo de envío depende de tu ubicación y del método seleccionado. Generalmente es de 3 a 7 días hábiles.';
+                      
+                  } 
+                  else if (userMessage.toLowerCase().includes('hace envios')) {
+                response = 'Sí, realizamos envíos nacionales e internacionales.';
+            }
+
+            else if (userMessage.toLowerCase().includes('tienen descuento')) {
+                response = 'Sí, tenemos descuentos en productos seleccionados.';
+            }
+
+            else if (userMessage.toLowerCase().includes('cómo devolver un producto')) {
+                response = 'Puedes devolverlo dentro de 30 días.';
+            }
+
+            else if (userMessage.toLowerCase().includes('tienen tienda física')) {
+                response = 'Operamos solo en línea.';
+            }
+
+            else if (userMessage.toLowerCase().includes('cuál es el horario de atención')) {
+                response = 'De lunes a viernes, de 9:00 AM a 6:00 PM.';
+            }
+
+            else if (userMessage.toLowerCase().includes('cuál es el estado de mi pedido')) {
+                response = 'Puedes rastrear tu pedido con el número de seguimiento.';
+            }
+
+            else if (userMessage.toLowerCase().includes('cómo me contacto')) {
+                response = 'Puedes contactarnos por correo, chat en vivo o redes sociales.';
+            }
+
+            else if (userMessage.toLowerCase().includes('es seguro comprar en línea')) {
+                response = 'Sí, usamos encriptación SSL para tu seguridad.';
+            }
+
+            else if (userMessage.toLowerCase().includes('tienen garantía')) {
+                response = 'Sí, todos nuestros productos tienen garantía.';
+            }
+            else if (userMessage.toLowerCase().includes('quiero ver productos')) {
+                response = `
+                    <div class="button-container">
+                        <button class="modern-button" onclick="location.href='menu.html'">
+                            <i class="fas fa-shopping-cart"></i> <span class="button-text">Ver productos</span>
+                        </button>
+                    </div>
+                `;
+            }
 
 
- else if (userMessage.toLowerCase().includes('rastrear pedido')) {
-           response = 'Recibirás un correo con un número de seguimiento para rastrear tu pedido.';
+ else if (userMessage.toLowerCase().includes('puego hacer pedido pedido')) {
+           response = 'Recibirás un correo con un número de seguimiento para puego hacer pedido tu pedido.';
        } 
         else if (userMessage.toLowerCase().includes('pago')) {
-           response = 'Aceptamos tarjetas de crédito, PayPal y transferencias bancarias.';
+           response = 'Aceptamos y transferencias bancarias mediante QR enviando un mensaje por medio de whatsapp .';
        } else if (userMessage.toLowerCase().includes('tengo reclamo')) {
            response = 'Contáctanos para que podamos saber el reclamo .';
        } else if (userMessage.toLowerCase().includes('gracias')) {
@@ -1803,7 +1839,7 @@ document.getElementById("chatbox-input").addEventListener("keypress", function(e
     response = '¡Gracias por tu interés! Nuestra tienda se encuentra en la hermosa ciudad de Sucre, Bolivia. Aquí te mostramos nuestra ubicación en vista satelital: <br><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d382.2934918781508!2d-65.25804649999999!3d-19.048114899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x93fbcf01f4cd4efb%3A0xe5f789cffb2cb7d6!2sInstituto%20T%C3%A9cnico%20CCA!5e0!3m2!1ses!2sbo!4v1695636720845!5m2!1ses!2sbo&t=k" width="250" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div><br>¡Esperamos verte pronto en nuestra tienda!';
        }
         else {
-     response = `Cuéntame más sobre tus objetivos de tu duda. ¿En qué puedo ayudarte?
+     response = `Soy un asistente virtual, así que no tengo una forma física. Pero estoy aquí para ayudarte  relacionada con los servicios de la Tienda. ¿Hay algo específico en lo que pueda asistirte hoy?
         
      <style>
          @keyframes fadeInUp {
@@ -1863,15 +1899,7 @@ document.getElementById("chatbox-input").addEventListener("keypress", function(e
  
  
  <!-- Seccio  de chatbooot -->
-=======
 
-<head>
-      <meta charset="UTF-8">
-      <link rel="icon" href="/favicon.ico">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>STORE-SAM</title>
-      <link id="theme-css" rel="stylesheet" type="text/css" href="/themes/aura-light-green/theme.css">
-</head>
 
 <body>
       <div id="app"></div>
