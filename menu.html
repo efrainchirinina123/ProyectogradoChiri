@@ -132,23 +132,7 @@
 		    					<input type="text" class="form-control" placeholder="Apellido">
 		    				</div> -->
 	    				</div>
-	    				<!-- <div class="d-md-flex">
-		    				<div class="form-group">
-		    					<div class="input-wrap">
-		            		<div class="icon"><span class="ion-md-calendar"></span></div>
-		            		<input type="text" class="form-control appointment_date" placeholder="Fecha">
-	            		</div>
-		    				</div>
-		    				<div class="form-group ml-md-4">
-		    					<div class="input-wrap">
-		            		<div class="icon"><span class="ion-ios-clock"></span></div>
-		            		<input type="text" class="form-control appointment_time" placeholder="Tiempo">
-	            		</div>
-		    				</div>
-		    				<div class="form-group ml-md-4">
-		    					<input type="text" class="form-control" placeholder="Telefono">
-		    				</div>
-	    				</div> -->
+	    				
 	    				<div class="d-md-flex">
 	    					<div class="form-group">
 		              <textarea name="" id="" cols="30" rows="2" class="form-control" placeholder="Mensaje"></textarea>
@@ -618,106 +602,111 @@
 				</li>
 
 				<script>
-					function closeCommentSection(productId) {
-					const commentSection = document.getElementById(`comment-section-${productId}`);
-					const nameInput = document.getElementById(`name-${productId}`);
-					const commentTextarea = document.getElementById(`comment-${productId}`);
-					
-					// Oculta la sección de comentarios
-					commentSection.style.display = 'none';
+					let lastOpenedProductId = null;
 
-					// Limpia los campos de entrada
-					nameInput.value = '';
-					commentTextarea.value = '';
-				}
+function closeCommentSection(productId) {
+	const commentSection = document.getElementById(`comment-section-${productId}`);
+	const nameInput = document.getElementById(`name-${productId}`);
+	const commentTextarea = document.getElementById(`comment-${productId}`);
+	
+	// Oculta la sección de comentarios
+	commentSection.style.display = 'none';
 
+	// Limpia los campos de entrada
+	nameInput.value = '';
+	commentTextarea.value = '';
+}
 
+function openCommentSection(productId) {
+	// Cierra la sección de comentarios anterior si existe
+	if (lastOpenedProductId !== null && lastOpenedProductId !== productId) {
+		closeCommentSection(lastOpenedProductId);
+	}
 
-					function highlightStars(productId, rating) {
-					const stars = document.querySelectorAll(`#rating-${productId} .star`);
-					stars.forEach((star, index) => {
-						if (index < rating) {
-							star.classList.add('highlight');
-						}
-					});
-				}
+	// Abre la nueva sección de comentarios y actualiza el último ID
+	const commentSection = document.getElementById(`comment-section-${productId}`);
+	commentSection.style.display = 'block';
+	lastOpenedProductId = productId;
+}
 
-				function resetStars(productId) {
-					const stars = document.querySelectorAll(`#rating-${productId} .star`);
-					stars.forEach((star) => {
-						star.classList.remove('highlight');
-					});
-				}
+function highlightStars(productId, rating) {
+	const stars = document.querySelectorAll(`#rating-${productId} .star`);
+	stars.forEach((star, index) => {
+		if (index < rating) {
+			star.classList.add('highlight');
+		}
+	});
+}
 
-				function rateProduct(productId, rating) {
-					// Guardar la calificación (puedes integrarlo con tu backend o almacenarlo localmente)
-					console.log(`Producto ID: ${productId} calificado con ${rating} estrellas`);
+function resetStars(productId) {
+	const stars = document.querySelectorAll(`#rating-${productId} .star`);
+	stars.forEach((star) => {
+		star.classList.remove('highlight');
+	});
+}
 
-					// Cambiar el color de las estrellas al hacer clic
-					const stars = document.querySelectorAll(`#rating-${productId} .star`);
-					stars.forEach((star, index) => {
-						if (index < rating) {
-							star.classList.add('selected');
-						} else {
-							star.classList.remove('selected');
-						}
-					});
+function rateProduct(productId, rating) {
+	// Guardar la calificación
+	console.log(`Producto ID: ${productId} calificado con ${rating} estrellas`);
 
-					// Mostrar la sección de comentarios después de calificar
-					const commentSection = document.getElementById(`comment-section-${productId}`);
-					commentSection.style.display = 'block'; // Mostrar la sección de comentarios
-				}
-				// Función para registrar el comentario y enviarlo a la API
-				function submitComment(productId) {
-					// Obtener los valores del formulario de comentario
-					const nameInput = document.getElementById(`name-${productId}`);
-					const commentBox = document.getElementById(`comment-${productId}`);
-					const nameText = nameInput.value;
-					const commentText = commentBox.value;
+	// Cambiar el color de las estrellas al hacer clic
+	const stars = document.querySelectorAll(`#rating-${productId} .star`);
+	stars.forEach((star, index) => {
+		if (index < rating) {
+			star.classList.add('selected');
+		} else {
+			star.classList.remove('selected');
+		}
+	});
 
-					// Verificar que ambos campos estén llenos
-					if (nameText && commentText) {
-						console.log(`Comentario de ${nameText} para el producto ID ${productId}: ${commentText}`);
-						
-						// Preparar los datos para el POST con los campos correctos
-						const data = {
-							productos_id: productId,  // Usamos el ID del producto
-							nombre: nameText,          // El nombre ingresado por el usuario
-							comentario: commentText    // El comentario ingresado por el usuario
-						};
+	// Mostrar la sección de comentarios, asegurando que solo una esté abierta
+	openCommentSection(productId);
+}
 
-						// Enviar comentario a la API
-						fetch('http://localhost:3010/api/v1/comentarios', {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',  // Tipo de contenido como JSON
-							},
-							body: JSON.stringify(data),  // Convertir los datos a JSON
-						})
-						.then(response => {
-							if (!response.ok) {
-								throw new Error('Error en la solicitud');
-							}
-							return response.json();
-						})
-						.then(data => {
-							console.log('Comentario enviado con éxito:', data);
-							// Limpiar los cuadros de texto y ocultar la sección de comentarios
-							nameInput.value = '';
-							commentBox.value = '';
-							const commentSection = document.getElementById(`comment-section-${productId}`);
-							commentSection.style.display = 'none';
-							alert('Gracias por tu comentario.');
-						})
-						.catch((error) => {
-							console.error('Error al enviar el comentario:', error);
-							alert('Hubo un error al enviar el comentario. Intenta nuevamente.');
-						});
-					} else {
-						// Si los campos están vacíos, mostrar un mensaje de alerta
-						alert("Por favor, completa todos los campos antes de enviar.");
-					}
-				}
+function submitComment(productId) {
+	const nameInput = document.getElementById(`name-${productId}`);
+	const commentBox = document.getElementById(`comment-${productId}`);
+	const nameText = nameInput.value;
+	const commentText = commentBox.value;
+
+	// Verificar que ambos campos estén llenos
+	if (nameText && commentText) {
+		console.log(`Comentario de ${nameText} para el producto ID ${productId}: ${commentText}`);
+		
+		const data = {
+			productos_id: productId,
+			nombre: nameText,
+			comentario: commentText
+		};
+
+		fetch('http://localhost:3010/api/v1/comentarios', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Error en la solicitud');
+			}
+			return response.json();
+		})
+		.then(data => {
+			console.log('Comentario enviado con éxito:', data);
+			nameInput.value = '';
+			commentBox.value = '';
+			closeCommentSection(productId);
+			alert('Gracias por tu comentario.');
+		})
+		.catch((error) => {
+			console.error('Error al enviar el comentario:', error);
+			alert('Hubo un error al enviar el comentario. Intenta nuevamente.');
+		});
+	} else {
+		alert("Por favor, completa todos los campos antes de enviar.");
+	}
+}
 
 
 				document.getElementById("emailLink").addEventListener("click", function(event) {

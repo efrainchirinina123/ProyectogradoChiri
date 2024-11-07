@@ -222,30 +222,56 @@
 					}
 					
 					async function renderOffers() {
-						const offers = await fetchOffers(); // Obtener ofertas
-						const productContainer = document.getElementById('product-list');
-					
-						if (offers.length === 0) {
-							productContainer.innerHTML = '<p>No hay ofertas disponibles.</p>';
-							return;
-						}
-					
-						// Renderiza las ofertas
-						productContainer.innerHTML = offers.map(item => `
-							<div class="col-md-4 text-center">
-								<div class="menu-wrap">
-                  <img  :src="'data:image/jpeg;base64,'+imagen.file64" alt="Imagen" width="50px" /><div class="text">
-										<h3><a href="#">${item.nombre}</a></h3>
-										<p>${item.descripcion || 'Descripción no disponible.'}</p>
-										<p class="pric" style="color: #fc3441"><span><s> ${item.precioantes ? item.precioantes.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' }) : 'N/A'}</s></span></p>
-										<p class="price"><span>Ahora ${item.precioahora ? item.precioahora.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' }) : 'N/A'}</span></p>
-										<p><a href="#" class="btn btn-primary btn-outline-primary" onclick="addToCart('${item.id}')">Añadir al carrito</a></p>
-									</div>
-								</div>
-							</div>
-						`).join('');
+          const offers = await fetchOffers(); // Obtener ofertas
+          const productContainer = document.getElementById('product-list');
+          
+          if (offers.length === 0) {
+            productContainer.innerHTML = '<p>No hay ofertas disponibles.</p>';
+            return;
+          }
+          
+          // Renderiza las ofertas
+          productContainer.innerHTML = offers.map(item => `
+            <div class="col-md-4 text-center">
+              <div class="menu-wrap">
+                <img src="data:image/jpeg;base64,${item.imagen.file64}" alt="Imagen" width="50px" />
+                <div class="text">
+                  <h3><a href="#">${item.nombre}</a></h3>
+                  <p>${item.descripcion || 'Descripción no disponible.'}</p>
+                  <!-- Precio antes -->
+                  <p class="pric" style="color: #fc3441">
+                    <span><s> ${item.precioantes ? item.precioantes.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' }) : 'N/A'}</s></span></p>
+                  <!-- Precio ahora -->
+                  <p class="price">
+                    <span>Ahora ${item.precioahora ? item.precioahora.toLocaleString('es-BO', { style: 'currency', currency: 'BOB' }) : 'N/A'}</span></p>
+
+                
+                      <!-- Calificación con estrellas interactiva -->
+                    <div class="rating" id="rating-${item.id}">
+                        <span class="star" id="star-${item.id}-1" onmouseover="highlightStars('${item.id}', 1)" onmouseout="resetStars('${item.id}')" onclick="rateProduct('${item.id}', 1)">&#9733;</span>
+                        <span class="star" id="star-${item.id}-2" onmouseover="highlightStars('${item.id}', 2)" onmouseout="resetStars('${item.id}')" onclick="rateProduct('${item.id}', 2)">&#9733;</span>
+                        <span class="star" id="star-${item.id}-3" onmouseover="highlightStars('${item.id}', 3)" onmouseout="resetStars('${item.id}')" onclick="rateProduct('${item.id}', 3)">&#9733;</span>
+                        <span class="star" id="star-${item.id}-4" onmouseover="highlightStars('${item.id}', 4)" onmouseout="resetStars('${item.id}')" onclick="rateProduct('${item.id}', 4)">&#9733;</span>
+                        <span class="star" id="star-${item.id}-5" onmouseover="highlightStars('${item.id}', 5)" onmouseout="resetStars('${item.id}')" onclick="rateProduct('${item.id}', 5)">&#9733;</span>
+                    </div>
+                 
+
+                  
+                  <!-- Botón para añadir al carrito -->
+                  <p><a href="#" class="btn btn-primary btn-outline-primary" onclick="addToCart('${item.id}')">Añadir al carrito</a></p>
+                  
+                  <!-- Comentarios (inicialmente oculto) -->
+										<div class="comment-section" id="comment-section-${item.id}" style="display: none;">
+											<button class="btn btn-secondary" onclick="closeCommentSection('${item.id}')">Cerrar</button>
+											<input type="text" id="name-${item.id}" placeholder="Tu nombre" class="comment-input" />
+											<textarea id="comment-${item.id}" placeholder="Escribe tu comentario aquí..." class="comment-textarea"></textarea>
+											<button class="btn btn-primary" onclick="submitComment('${item.id}')">Enviar Comentario</button>
+										</div>
+                </div>
+              </div>
+            </div>
+          `).join('');
 					}
-					
 					// Llamar a la función para renderizar ofertas
 					renderOffers();
 					</script>
@@ -642,6 +668,122 @@
 </li>
 
 <script>
+  let currentOpenCommentSection = null; // Variable to track the currently open comment section
+
+function closeCommentSection(productId) {
+	const commentSection = document.getElementById(`comment-section-${productId}`);
+	const nameInput = document.getElementById(`name-${productId}`);
+	const commentTextarea = document.getElementById(`comment-${productId}`);
+	
+	// Hide the comment section
+	commentSection.style.display = 'none';
+
+	// Clear input fields
+	nameInput.value = '';
+	commentTextarea.value = '';
+	
+	// Reset the currently open comment section
+	if (currentOpenCommentSection === productId) {
+		currentOpenCommentSection = null;
+	}
+}
+
+function highlightStars(productId, rating) {
+	const stars = document.querySelectorAll(`#rating-${productId} .star`);
+	stars.forEach((star, index) => {
+		if (index < rating) {
+			star.classList.add('highlight');
+		}
+	});
+}
+
+function resetStars(productId) {
+	const stars = document.querySelectorAll(`#rating-${productId} .star`);
+	stars.forEach((star) => {
+		star.classList.remove('highlight');
+	});
+}
+
+function rateProduct(productId, rating) {
+	// Close any previously open comment section
+	if (currentOpenCommentSection !== null && currentOpenCommentSection !== productId) {
+		closeCommentSection(currentOpenCommentSection);
+	}
+
+	// Store the new open comment section ID
+	currentOpenCommentSection = productId;
+
+	// Log the rating for the product
+	console.log(`Producto ID: ${productId} calificado con ${rating} estrellas`);
+
+	// Change the color of the stars when clicked
+	const stars = document.querySelectorAll(`#rating-${productId} .star`);
+	stars.forEach((star, index) => {
+		if (index < rating) {
+			star.classList.add('selected');
+		} else {
+			star.classList.remove('selected');
+		}
+	});
+
+	// Show the comment section after rating
+	const commentSection = document.getElementById(`comment-section-${productId}`);
+	commentSection.style.display = 'block';
+}
+
+// Function to submit the comment to the API
+function submitComment(productId) {
+	const nameInput = document.getElementById(`name-${productId}`);
+	const commentBox = document.getElementById(`comment-${productId}`);
+	const nameText = nameInput.value;
+	const commentText = commentBox.value;
+
+	// Check if both fields are filled
+	if (nameText && commentText) {
+		console.log(`Comentario de ${nameText} para el producto ID ${productId}: ${commentText}`);
+		
+		const data = {
+			ofertas_id: productId,
+			nombre: nameText,
+			comentario: commentText
+		};
+
+		// Send comment to the API
+		fetch('http://localhost:3010/api/v1/comentarioofertas', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Error en la solicitud');
+			}
+			return response.json();
+		})
+		.then(data => {
+			console.log('Comentario enviado con éxito:', data);
+			// Clear text boxes and hide the comment section
+			nameInput.value = '';
+			commentBox.value = '';
+			const commentSection = document.getElementById(`comment-section-${productId}`);
+			commentSection.style.display = 'none';
+			alert('Gracias por tu comentario.');
+			
+			// Reset the currently open comment section
+			currentOpenCommentSection = null;
+		})
+		.catch((error) => {
+			console.error('Error al enviar el comentario:', error);
+			alert('Hubo un error al enviar el comentario. Intenta nuevamente.');
+		});
+	} else {
+		alert("Por favor, completa todos los campos antes de enviar.");
+	}
+}
+
+  // funcion de ofertas
   document.getElementById("emailLink").addEventListener("click", function(event) {
     // Aquí puedes manejar cualquier función adicional antes de abrir el enlace
     alert("Abriendo tu correo para Contactar");
@@ -664,7 +806,9 @@
         </div>
       </div>
     </footer>
-    
+    <style>
+      
+    </style>
   
 
   <!-- loader -->
