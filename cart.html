@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   </head>
   <body>
   	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -85,62 +87,93 @@
     </section>
 
 	<section class="ftco-section ftco-cart" id="cart-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 ftco-animate">
-					<div class="cart-list">
-						<table class="table">
-							<thead class="thead-primary">
-								<tr class="text-center">
-									<th>&nbsp;</th>
-									<th>&nbsp;</th>
-									<th>Producto</th>
-									<th>Precio</th>
-									<th>Cantidad</th>
-									<th>Total</th>
-								</tr>
-							</thead>
-							<tbody id="cart-items">
-								<!-- Los productos añadidos al carrito aparecerán aquí -->
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="row justify-content-end">
-				<div class="col-lg-3 col-md-6 mt-5 cart-wrap ftco-animate">
-					<div class="cart-total mb-3">
-						<h3>Totales del carrito</h3>
-						<p class="d-flex">
-							<span>Total parcial</span>
-							<span id="subtotal">0.00 %</span>
-						</p>
-						<p class="d-flex">
-							<span>Descuento</span>
-							<span>0.00%</span>
-						</p>
-						<hr>
-						<p class="d-flex total-price">
-							<span>Total</span>
-							<span id="total-price">0.00 %</span>
-						</p>
-					</div>
-					<!-- Botón de proceder con el pago -->
-					<p class="text-center">
-						<a href="javascript:void(0);" class="btn btn-primary py-3 px-4" id="payment-options-button">Proceder con el pago</a>
-					</p>
-					<!-- Opciones de pago (QR o WhatsApp) -->
-					<div id="payment-options" style="display: none;">
-						<p class="text-center">Selecciona un método de pago:</p>
-						<button class="btn btn-secondary" id="qr-option">Pagar con QR</button>
-						<button class="btn btn-secondary" id="whatsapp-option">Enviar por WhatsApp</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	
-	
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 ftco-animate">
+                    <div class="cart-list">
+                        <table class="table">
+                            <thead class="thead-primary">
+                                <tr class="text-center">
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-items">
+                                <!-- Los productos añadidos al carrito aparecerán aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-lg-3 col-md-6 mt-5 cart-wrap ftco-animate">
+                    <div class="cart-total mb-3">
+                        <h3>Totales del carrito</h3>
+                        <p class="d-flex">
+                            <span>Total parcial</span>
+                            <span id="subtotal">0.00 %</span>
+                        </p>
+                        <p class="d-flex">
+                            <span>Descuento</span>
+                            <span>0.00%</span>
+                        </p>
+                        <hr>
+                        <p class="d-flex total-price">
+                            <span>Total</span>
+                            <span id="total-price">0.00 %</span>
+                        </p>
+                    </div>
+                    <!-- Botón para generar la cotización -->
+<p class="text-center">
+    <button id="generate-quote" class="btn btn-secondary py-3 px-4">Generar Cotización</button>
+</p>
+
+<style>
+    #generate-quote {
+    background-color: #3b9e9e;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#generate-quote:hover {
+    background-color: #317f7f;
+    transform: scale(1.05);
+}
+
+</style>                   
+
+                    <p class="text-center">
+                        <a href="#" class="btn btn-primary py-3 px-4" id="checkout-button">Proceder con el pago</a>
+                    </p>
+                    <div id="qr-image-container" style="display: none; text-align: center; margin-top: 20px;">
+                        <img id="qr-image" src="https://generator.1qr.fr/?id=3KZX0&size=4&date=202312&cache=1" alt="Código QR" style="width: 200px; height: 200px;">
+                    </div>
+                    <p id="qr-expired-message" style="display: none; color: red; text-align: center;">El tiempo ha expirado. Intente de nuevo en 15 minutos.</p>
+                    
+                    <!-- Opciones de Pago -->
+                    
+                    <button id="cancel-button" class="btn btn-secondary py-3 px-4" style="display: none;">Cancelar</button>
+
+                </div>
+                <div id="payment-options" style="display: none;">
+                    <h4>Como te Gustaria pagar</h4>
+                    <button id="whatsapp-option" class="btn btn-primary py-3 px-4">Pagar con WhatsApp</button>
+                    <button id="qr-option" class="btn btn-primary py-3 px-4 my-2">Pagar con QR</button>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    
 
     <section class="ftco-section">
     	<div class="container">
@@ -162,46 +195,229 @@
     	</div>
     </section>
 
-	<script>
 
-document.getElementById('payment-options-button').addEventListener('click', function() {
-    // Mostrar opciones de pago
-    document.getElementById('payment-options').style.display = 'block';
-});
-
-// Si seleccionan "Pagar con WhatsApp"
-document.getElementById('whatsapp-option').addEventListener('click', function() {
-    // Obtener los productos y el total del carrito
+<script>
+// Función para generar la cotización en PDF y registrar el recibo en la API
+document.getElementById('generate-quote').addEventListener('click', function() {
     let cartItems = document.querySelectorAll('#cart-items tr');
-    let total = document.getElementById('total-price').textContent;
-    let subtotal = document.getElementById('subtotal').textContent;
-    let cartDetails = "*Hola, estoy interesado en los siguientes productos:*\n\n";
+    let total = document.getElementById('total-price').textContent.trim();
 
-    // Agregar los productos al mensaje
+    // Verificar si el carrito tiene productos
+    if (cartItems.length === 0) {
+        alert("El carrito está vacío. Agregue productos antes de generar la cotización.");
+        return;
+    }
+
+    // Crear un nuevo PDF usando jsPDF
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Agregar título y fecha
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Cotización de Productos", 105, 20, null, null, 'center');
+    doc.setFontSize(12);
+    doc.text(`Fecha: ${new Date().toLocaleString()}`, 10, 30);
+
+    // Cabecera de la tabla
+    doc.setFontSize(14);
+    doc.text("Nombre Producto", 10, 40);
+    doc.text("Cantidad", 90, 40);
+    doc.text("Precio", 120, 40);
+    doc.text("Total", 160, 40);
+
+    // Línea horizontal
+    doc.line(10, 42, 200, 42);
+
+    let y = 50;
+    let reciboData = []; // Array para almacenar los datos del recibo
+    let nombreProductos = ""; // Variable para almacenar los nombres concatenados
+
+    // Detalle de los productos del carrito
     cartItems.forEach(item => {
         let productName = item.querySelector('td:nth-child(3)').textContent;
         let productPrice = item.querySelector('td:nth-child(4)').textContent;
-        let productQuantity = item.querySelector('td:nth-child(5)').textContent;
+        let productQuantity = item.querySelector('td:nth-child(5) input') 
+            ? item.querySelector('td:nth-child(5) input').value 
+            : item.querySelector('td:nth-child(5)').textContent;
         let productTotal = item.querySelector('td:nth-child(6)').textContent;
-        cartDetails += `🛒 **Producto**: ${productName}\n` +
-                       `💵 **Precio**: ${productPrice}\n` +
-                       `🔢 **Cantidad**: ${productQuantity}\n` +
-                       `💰 **Total**: ${productTotal}\n\n`;
+
+        // Añadir datos al PDF
+        doc.text(productName, 10, y);
+        doc.text(productQuantity, 90, y);
+        doc.text(productPrice, 120, y);
+        doc.text(productTotal, 160, y);
+
+        // Guardar los datos del recibo (solo los campos requeridos)
+        reciboData.push({
+            nombre: productName,
+            cantidad: productQuantity,
+            precio: productPrice,
+            total: productTotal
+        });
+
+        // Concatenar los nombres de los productos para enviarlos como cadena
+        nombreProductos += productName + ", ";
+
+        y += 10;
     });
-    // Agregar el total final
-    cartDetails += `*Total del carrito:* ${total}\n` +
-                   `*Subtotal:* ${subtotal}\n\n` +
-                   `✅ *¡Gracias por tu compra!*`;
-    // Enviar el mensaje por WhatsApp
+
+    // Línea horizontal final
+    doc.line(10, y + 5, 200, y + 5);
+
+    // Total final
+    doc.setFont("helvetica", "bold");
+    doc.text(`Total a Pagar: ${total}`, 10, y + 15);
+
+    // Guardar el PDF
+    doc.save("cotizacion.pdf");
+
+    // Eliminar la coma extra al final de los nombres
+    nombreProductos = nombreProductos.slice(0, -2); // Elimina la última coma
+
+    // Registrar el recibo en la API (solo los campos requeridos)
+    registerReceipt(reciboData, total, nombreProductos);
+});
+
+// Función para registrar el recibo en la API
+function registerReceipt(receiptData, total, nombreProductos) {
+    // Crear objeto solo con los campos que quieres registrar
+    const recibo = {
+        totalpagar: total, // Total final de la cotización
+        nombre: nombreProductos, // Nombres de los productos concatenados
+        cantidad: receiptData.map(item => item.cantidad), // Cantidades de los productos
+        precio: receiptData.map(item => item.precio), // Precios de los productos
+        total: receiptData.map(item => item.total) // Totales de los productos
+    };
+
+    // Verificar que el objeto recibo tiene los datos esperados
+    console.log("Datos del recibo a enviar:", recibo);
+
+    // Enviar los datos del recibo a la API
+    fetch("http://localhost:3010/api/v1/recibos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(recibo)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Respuesta de la API:", data); // Verificar qué responde la API
+        alert("El recibo ha sido registrado correctamente.");
+    })
+    .catch(error => {
+        console.error("Error al registrar el recibo:", error);
+        alert("Hubo un error al registrar el recibo. Intente nuevamente.");
+    });
+}
+
+
+</script>
+
+    <script>
+     let qrCooldown = false;
+
+document.getElementById('checkout-button').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Verificar si hay productos en el carrito
+    let cartItems = document.querySelectorAll('#cart-items tr');
+    if (cartItems.length === 0) {
+        alert("El carrito está vacío. Agregue productos antes de proceder.");
+        return;
+    }
+
+    // Ocultar el botón de "Proceder con el pago"
+    document.getElementById('checkout-button').style.display = 'none';
+
+    // Mostrar las opciones de pago (botones de WhatsApp y QR)
+    document.getElementById('payment-options').style.display = 'block';
+
+    // Mostrar el botón de cancelar
+    document.getElementById('cancel-button').style.display = 'inline-block';
+});
+
+// Botón para pagar con QR
+document.getElementById('qr-option').addEventListener('click', function() {
+    let cartItems = document.querySelectorAll('#cart-items tr');
+    if (cartItems.length === 0) {
+        alert("El carrito está vacío. Agregue productos antes de proceder.");
+        return;
+    }
+
+    if (qrCooldown) {
+        alert("Intente de nuevo en 15 minutos.");
+        return;
+    }
+
+    let qrImageContainer = document.getElementById('qr-image-container');
+    let qrExpiredMessage = document.getElementById('qr-expired-message');
+
+    qrExpiredMessage.style.display = 'none';
+    qrImageContainer.style.display = 'block';
+
+    setTimeout(function() {
+        qrImageContainer.style.display = 'none';
+        qrExpiredMessage.style.display = 'block';
+
+        qrCooldown = true;
+        setTimeout(function() {
+            qrCooldown = false;
+            qrExpiredMessage.style.display = 'none';
+        }, 900000); 
+    }, 15000); 
+});
+
+// Botón para pagar con WhatsApp
+document.getElementById('whatsapp-option').addEventListener('click', function() {
+    let cartItems = document.querySelectorAll('#cart-items tr');
+    let total = document.getElementById('total-price').textContent;
+    let cartDetails = "*Hola, estoy interesado en los siguientes productos:*\n\n";
+
+    if (cartItems.length === 0) {
+        alert("El carrito está vacío. Agregue productos antes de proceder.");
+        return;
+    }
+
+    cartItems.forEach(item => {
+        let productName = item.querySelector('td:nth-child(3)').textContent;
+        let productPrice = item.querySelector('td:nth-child(4)').textContent;
+        
+        let productQuantityElement = item.querySelector('td:nth-child(5) input');
+        let productQuantity = productQuantityElement 
+            ? productQuantityElement.value 
+            : item.querySelector('td:nth-child(5)').textContent;
+            
+        let productTotal = item.querySelector('td:nth-child(6)').textContent;
+
+        cartDetails += `🛒 Producto: ${productName}\n` +
+                       `💵 Precio: ${productPrice}\n` +
+                       `🔢 Cantidad: ${productQuantity}\n` +
+                       `💰 Total: ${productTotal}\n\n`;
+    });
+
+    cartDetails += `Total Por Pagar: ${total}\n` +
+                   `☻¡Me puede Proporcionar metodos de pago por favor Gracias!`;
+
     let whatsappLink = `https://wa.me/?text=${encodeURIComponent(cartDetails)}`;
     window.open(whatsappLink, '_blank');
 });
 
-// Si seleccionan "Pagar con QR", puedes agregar el código para mostrar un código QR
-document.getElementById('qr-option').addEventListener('click', function() {
-    alert('Aquí se mostrará el código QR para el pago https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGqwmlELROeODaWNqs4eMz13ZIj78giDRxRg&s.');
+// Botón de cancelar para restablecer
+document.getElementById('cancel-button').addEventListener('click', function() {
+    // Ocultar opciones de pago y botón cancelar
+    document.getElementById('payment-options').style.display = 'none';
+    document.getElementById('cancel-button').style.display = 'none';
+
+    // Volver a mostrar el botón "Proceder con el pago"
+    document.getElementById('checkout-button').style.display = 'inline-block';
+    document.getElementById('qr-image-container').style.display = 'none';
+    document.getElementById('qr-expired-message').style.display = 'none';
 });
 
+        </script>
+	<script>
 
 		let cart = [];
 
