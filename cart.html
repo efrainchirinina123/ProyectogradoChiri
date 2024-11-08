@@ -125,13 +125,22 @@
 							<span id="total-price">0.00 %</span>
 						</p>
 					</div>
+					<!-- Botón de proceder con el pago -->
 					<p class="text-center">
-						<a href="checkout.html" class="btn btn-primary py-3 px-4" id="checkout-button">Proceder con el pago</a>
+						<a href="javascript:void(0);" class="btn btn-primary py-3 px-4" id="payment-options-button">Proceder con el pago</a>
 					</p>
+					<!-- Opciones de pago (QR o WhatsApp) -->
+					<div id="payment-options" style="display: none;">
+						<p class="text-center">Selecciona un método de pago:</p>
+						<button class="btn btn-secondary" id="qr-option">Pagar con QR</button>
+						<button class="btn btn-secondary" id="whatsapp-option">Enviar por WhatsApp</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+	
+	
 
     <section class="ftco-section">
     	<div class="container">
@@ -154,6 +163,46 @@
     </section>
 
 	<script>
+
+document.getElementById('payment-options-button').addEventListener('click', function() {
+    // Mostrar opciones de pago
+    document.getElementById('payment-options').style.display = 'block';
+});
+
+// Si seleccionan "Pagar con WhatsApp"
+document.getElementById('whatsapp-option').addEventListener('click', function() {
+    // Obtener los productos y el total del carrito
+    let cartItems = document.querySelectorAll('#cart-items tr');
+    let total = document.getElementById('total-price').textContent;
+    let subtotal = document.getElementById('subtotal').textContent;
+    let cartDetails = "*Hola, estoy interesado en los siguientes productos:*\n\n";
+
+    // Agregar los productos al mensaje
+    cartItems.forEach(item => {
+        let productName = item.querySelector('td:nth-child(3)').textContent;
+        let productPrice = item.querySelector('td:nth-child(4)').textContent;
+        let productQuantity = item.querySelector('td:nth-child(5)').textContent;
+        let productTotal = item.querySelector('td:nth-child(6)').textContent;
+        cartDetails += `🛒 **Producto**: ${productName}\n` +
+                       `💵 **Precio**: ${productPrice}\n` +
+                       `🔢 **Cantidad**: ${productQuantity}\n` +
+                       `💰 **Total**: ${productTotal}\n\n`;
+    });
+    // Agregar el total final
+    cartDetails += `*Total del carrito:* ${total}\n` +
+                   `*Subtotal:* ${subtotal}\n\n` +
+                   `✅ *¡Gracias por tu compra!*`;
+    // Enviar el mensaje por WhatsApp
+    let whatsappLink = `https://wa.me/?text=${encodeURIComponent(cartDetails)}`;
+    window.open(whatsappLink, '_blank');
+});
+
+// Si seleccionan "Pagar con QR", puedes agregar el código para mostrar un código QR
+document.getElementById('qr-option').addEventListener('click', function() {
+    alert('Aquí se mostrará el código QR para el pago https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGqwmlELROeODaWNqs4eMz13ZIj78giDRxRg&s.');
+});
+
+
 		let cart = [];
 
 		async function fetchProducts() {
