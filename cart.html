@@ -287,7 +287,7 @@ function registerReceipt(receiptData, total, nombreProductos) {
         nombre: nombreProductos, // Nombres de los productos concatenados
         cantidad: receiptData.map(item => item.cantidad), // Cantidades de los productos
         precio: receiptData.map(item => item.precio), // Precios de los productos
-        total: receiptData.map(item => item.total) // Totales de los productos
+        // total: receiptData.map(item => item.total) // Totales de los productos
     };
 
     // Verificar que el objeto recibo tiene los datos esperados
